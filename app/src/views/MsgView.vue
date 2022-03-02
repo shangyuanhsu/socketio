@@ -25,6 +25,20 @@ export default {
   setup() {
     const store = useStore();
 
+    // {
+    //   id: 0,
+    //   uid: 234,
+    //   time: "2022-03-02",
+    //   lastChat: "ok! Thank you",
+    //   chat: [
+    //     { uid: 234, content: "ok! Thank you" },
+    //     { uid: 123, content: "yoyo" },
+    //     { uid: 234, content: "hello" },
+    //   ],
+    //   process: 0,
+    //   media: 2,
+    // },
+
     //開始
     onMounted(() => {
       if (!store.state.userId) {

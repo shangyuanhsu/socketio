@@ -1,25 +1,27 @@
 <template>
   <div class="msgSide">
-    <div class="search">
-      <select name="">
-        <option value="0">All</option>
-        <option value="1">Facebook</option>
-        <option value="2">Line</option>
-        <option value="3">Other</option>
-      </select>
-      <div>
-        <img src="../assets/img/search_black_24dp.svg" alt="" />
-      </div>
+    <MsgSearch />
+    <MsgSet />
+    <div class="allMsgBox">
+      <MsgBox />
+      <MsgBox />
     </div>
   </div>
 </template>
 
 <script>
 import { onMounted } from "vue";
+import MsgSearch from "@/components/MsgSearch.vue";
+import MsgSet from "@/components/MsgSet.vue";
+import MsgBox from "@/components/MsgBox.vue";
 
 export default {
   name: "MsgSide",
-  components: {},
+  components: {
+    MsgSearch,
+    MsgSet,
+    MsgBox,
+  },
   setup() {
     //開始
     onMounted(() => {});
@@ -31,24 +33,32 @@ export default {
 
 <style scoped>
 .msgSide {
-  padding: 8px 10px;
+  height: calc(100vh - 65px);
+  padding: 8px 20px;
+  border-right: 1px solid rgb(228, 228, 228);
 }
-.search {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.allMsgBox {
+  border: 1px solid rgb(228, 228, 228);
+  height: calc(100vh - 223px);
+  overflow-y: auto;
 }
-select {
-  width: 86%;
-  padding: 8px 10px;
-  font-size: 18px;
-  cursor: pointer;
-  outline: none;
-  border: 1px solid rgb(226, 226, 226);
-  border-radius: 20px;
+
+.allMsgBox::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
-.search > div > img {
-  width: 38px;
-  cursor: pointer;
+
+/*滾動條裡面小方塊樣式*/
+.allMsgBox::-webkit-scrollbar-thumb {
+  border-radius: 100px;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  background: rgb(212, 212, 212);
+}
+
+/*滾動條裡面軌道樣式*/
+.allMsgBox::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+  border-radius: 0;
+  background: rgba(189, 189, 189, 0.1);
 }
 </style>

@@ -19,7 +19,7 @@ export default {
       store.dispatch("insertUserId", null);
     });
     const getUserId = () => {
-      store.dispatch("insertUserId", uid.value);
+      store.dispatch("insertUserId", Number(uid.value));
       router.push({ name: "home" });
     };
     return {
@@ -41,6 +41,4 @@ export default {
   bottom: 0;
   margin: auto;
 }
-
-
 </style>

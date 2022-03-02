@@ -44,6 +44,7 @@ export default {
   padding: 10px 20px;
 }
 .hamburgerMenu {
+  display: none;
   display: flex;
   flex-direction: column;
 }
@@ -54,6 +55,7 @@ export default {
   margin: 5px 0;
   border-radius: 4px;
   background: white;
+  display: none;
 }
 .userBox {
   display: flex;
@@ -64,8 +66,8 @@ export default {
 }
 .userImg {
   background: white;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   border-radius: 70%;
   overflow: hidden;
 }

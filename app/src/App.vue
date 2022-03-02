@@ -19,11 +19,19 @@
   color: #2c3e50;
 }
 button {
-  padding: 5px;
+  padding: 8px 10px;
   cursor: pointer;
+  border: 0;
+  background: gray;
+  color: white;
+  outline: none;
+  border-radius: 20px;
 }
 input[type="text"] {
-  padding: 5px;
+  padding: 8px;
   margin: 0 5px 0 0;
+  border: 1px solid gray;
+  outline: none;
+  border-radius: 20px;
 }
 </style>
