@@ -5,26 +5,46 @@
     </div>
     <div class="boxData">
       <div>
-        <div class="category">Line</div>
+        <div :class="[{category} ,whichCategory === 'Facebook' ? 'categoryFb' :whichCategory === 'Line' ?'categoryLine':'']">{{whichCategory}}</div>
         <div class="time">Monday</div>
       </div>
-      <div class="otherUser">Amy</div>
+      <div class="otherUser">{{cusName}}</div>
       <div>text msg</div>
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { onMounted ,ref} from "vue";
 
 export default {
   name: "MsgBox",
-  components: {},
-  setup() {
+  props:{
+   name: String,
+   category:String,
+  },
+  setup(props) {
+    const cusName = ref("");
+    const whichCategory = ref("");
+    const arrSearch = {
+      arr: [
+        { id: "0", title: "All" },
+        { id: "1", title: "Facebook" },
+        { id: "2", title: "Line" },
+        { id: "3", title: "Other" },
+      ],
+    };
     //開始
-    onMounted(() => {});
+    onMounted(() => {
+      cusName.value = props.name;
+      whichCategory.value = arrSearch.arr.filter(item=>item.id === props.category)[0].title;
+      console.log( whichCategory.value );
+    });
 
-    return {};
+    return {
+      cusName,
+      whichCategory
+    };
   },
 };
 </script>
@@ -61,9 +81,18 @@ export default {
   font-size: 10px;
 }
 .category {
-  background-color: rgb(205, 228, 205);
+    background-color: rgb(237, 237, 237);
+
   padding: 2px 4px;
   border-radius: 4px;
+}
+.categoryLine{
+  background-color: rgb(213, 244, 213);
+
+}
+.categoryFb{
+  background-color: rgb(202, 222, 235);
+
 }
 .boxData .otherUser {
   font-size: 20px;

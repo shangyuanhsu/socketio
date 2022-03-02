@@ -28,7 +28,9 @@
         </div>
       </li>
     </ul>
-    <div class="goBack" v-show="isShowBack" @click="goBack">back</div>
+    <div class="goBack" v-show="isShowBack" @click="goBack">
+      <img src="../assets/img/arrow_downward_black_24dp.svg" alt="">
+    </div>
     <form>
       <input type="text" v-model="messages" />
       <div class="sendBtn" @click.prevent="sandMsg">
@@ -274,11 +276,16 @@ li > .mine > div {
   bottom: 70px;
   right: 70px;
   text-align: center;
-  padding: 12px 4px;
+  width: 40px;
+  height: 40px;
   background: white;
   border-radius: 70%;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
+}
+.goBack img{
+  width: 100%;
+  opacity: 0.7;
 }
 .cusData,
 .cusSet {

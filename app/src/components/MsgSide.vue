@@ -3,8 +3,9 @@
     <MsgSearch />
     <MsgSet />
     <div class="allMsgBox">
-      <MsgBox />
-      <MsgBox />
+      <MsgBox name="Amy" category="1"/>
+      <MsgBox name="Tom" category="2"/>
+      <MsgBox name="Leo" category="3"/>
     </div>
   </div>
 </template>
