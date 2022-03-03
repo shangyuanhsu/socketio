@@ -14,10 +14,9 @@ export default {
   name: "LoginView",
   setup() {
     const store = useStore();
-    const uid = ref("");
-    onMounted(() => {
-      store.dispatch("insertUserId", null);
-    });
+    const uid = ref(""); //輸入使用者ID
+    onMounted(() => {});
+    //
     const getUserId = () => {
       store.dispatch("insertUserId", Number(uid.value));
       router.push({ name: "home" });

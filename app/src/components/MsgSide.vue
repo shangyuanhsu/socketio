@@ -3,15 +3,19 @@
     <MsgSearch />
     <MsgSet />
     <div class="allMsgBox">
-      <MsgBox name="Amy" category="1"/>
-      <MsgBox name="Tom" category="2"/>
-      <MsgBox name="Leo" category="3"/>
+      <MsgBox
+        v-for="(item, index) in arrMyFriendBox.arr"
+        :key="index"
+        :name="item.name"
+        :category="item.category"
+        :lastMsg="item.msg"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { onMounted, reactive } from "vue";
 import MsgSearch from "@/components/MsgSearch.vue";
 import MsgSet from "@/components/MsgSet.vue";
 import MsgBox from "@/components/MsgBox.vue";
@@ -24,10 +28,19 @@ export default {
     MsgBox,
   },
   setup() {
+    const arrMyFriendBox = reactive({
+      arr: [
+        { name: "Amy", category: "1", msg: "last text" },
+        { name: "Tom", category: "2", msg: "last text" },
+        { name: "Leo", category: "3", msg: "last text" },
+      ],
+    });
     //開始
     onMounted(() => {});
 
-    return {};
+    return {
+      arrMyFriendBox,
+    };
   },
 };
 </script>

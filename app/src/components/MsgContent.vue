@@ -29,7 +29,7 @@
       </li>
     </ul>
     <div class="goBack" v-show="isShowBack" @click="goBack">
-      <img src="../assets/img/arrow_downward_black_24dp.svg" alt="">
+      <img src="../assets/img/arrow_downward_black_24dp.svg" alt="" />
     </div>
     <form>
       <input type="text" v-model="messages" />
@@ -115,7 +115,7 @@ export default {
         },
       ],
     }); //對話
-    const socket = io("http://localhost:3000/");
+    const socket = io("http://localhost:3000/room1");
     //開始
     onMounted(() => {
       uid.value = store.state.userId;
@@ -283,7 +283,7 @@ li > .mine > div {
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
-.goBack img{
+.goBack img {
   width: 100%;
   opacity: 0.7;
 }
