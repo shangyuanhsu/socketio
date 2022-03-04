@@ -1,13 +1,15 @@
 <template>
   <div class="msgContent">
+    <!-- status -->
     <div class="cusData">
-      <div class="cusUserName">Amy</div>
+      <div class="cusUserName">{{ nameCus }}</div>
       <div class="cusSet">
         <div>blacklist</div>
         <div class="checked">processing</div>
         <div>completed</div>
       </div>
     </div>
+    <!-- chat box -->
     <ul ref="show" @wheel="showBack">
       <li v-for="(item, ind) in arrMessages.arr" :key="ind">
         <p class="zoneTime">{{ item.date }}</p>
@@ -31,114 +33,115 @@
     <div class="goBack" v-show="isShowBack" @click="goBack">
       <img src="../assets/img/arrow_downward_black_24dp.svg" alt="" />
     </div>
+    <!-- send msg -->
     <form>
       <input type="text" v-model="messages" />
-      <div class="sendBtn" @click.prevent="sandMsg">
+      <button class="sendBtn" @click.prevent="sandMsg">
         <img src="../assets/img/send_black_24dp.svg" alt="" />
-      </div>
+      </button>
     </form>
   </div>
 </template>
 
 <script>
-import { onMounted, reactive, ref, nextTick } from "vue";
+import { onMounted, reactive, ref, nextTick, watchEffect } from "vue";
 import { useStore } from "vuex";
+import moment from "moment";
 import { io } from "socket.io-client";
 export default {
   name: "MsgContent",
   components: {},
+  props: {
+    arrData: Object,
+    cusName: String,
+  },
   setup() {
     const store = useStore();
     const uid = ref(null);
-    const show = ref(null);
-    const isShowBack = ref(false);
+    const userName = ref(""); // 使用的名字
+    const show = ref(null); // 對話框的dom element
+    const isShowBack = ref(false); // 回到最訊息的按鈕
     const messages = ref(""); // 輸入的訊息
-    const arrMessages = reactive({
-      arr: [
-        {
-          date: "2022-03-01",
-          data: [
-            {
-              uid: 234,
-              name: "Amy",
-              content: "hello~",
-              time: "2022-03-01 11:00",
-            },
-            {
-              uid: 123,
-              name: "Sara",
-              content: "🙌",
-              time: "2022-03-01 11:02",
-            },
-            {
-              uid: 234,
-              name: "Amy",
-              content: "I need help",
-              time: "2022-03-01 11:10",
-            },
-          ],
-        },
-        {
-          date: "2022-03-02",
-          data: [
-            {
-              uid: 123,
-              name: "Sara",
-              content: "what happen",
-              time: "2022-03-01 11:00",
-            },
-            {
-              uid: 123,
-              name: "Sara",
-              content: "??",
-              time: "2022-03-02 11:02",
-            },
-            {
-              uid: 234,
-              name: "Amy",
-              content: "could u teach me vue?",
-              time: "2022-03-02 11:10",
-            },
-            {
-              uid: 234,
-              name: "Amy",
-              content: "i can't build vue cli and can't new a project",
-              time: "2022-03-02 11:10",
-            },
-            {
-              uid: 234,
-              name: "Amy",
-              content: "do u have time",
-              time: "2022-03-02 11:10",
-            },
-          ],
-        },
-      ],
-    }); //對話
-    const socket = io("http://localhost:3000/room1");
-    //開始
-    onMounted(() => {
-      uid.value = store.state.userId;
-      show.value.scrollTo(0, show.value.scrollHeight);
+    const roomId = ref("");
+    const nameCus = ref("");
+    const arrMessages = reactive({ arr: [] }); // 對話data
 
-      socket.on("chat message", async function (msg) {
-        arrMessages.arr[1].data.push({
-          uid: uid,
-          name: "Sara",
-          content: msg,
-          time: "2022-03-02",
-        });
-        await nextTick();
+    const socket = io("http://localhost:3000/"); // 聊天室連線
+
+    // 開始
+    onMounted(() => {
+      console.log(socket);
+      uid.value = store.state.userId;
+      userName.value = store.state.userName;
+      roomId.value = store.state.showRoomId;
+      init();
+    });
+
+    const init = () => {
+      console.log(roomId.value);
+      // 加入聊天室
+      socket.emit("joinRoom", { username: uid.value, room: roomId.value });
+      //  發送訊息
+      socket.on("chatMessage", async function (id, name, msg, time) {
+        // 最新的訊息推到畫面裡
+        console.log(roomId.value);
+        const date = moment().format("MMM Do YY");
+        if (arrMessages.arr.length > 0) {
+          if (arrMessages.arr[arrMessages.arr.length - 1].date === date) {
+            arrMessages.arr[arrMessages.arr.length - 1].data.push({
+              uid: id,
+              name: name,
+              content: msg,
+              time: time,
+            });
+          } else {
+            arrMessages.arr[arrMessages.arr.length] = {
+              date: date,
+              data: [
+                {
+                  uid: id,
+                  name: name,
+                  content: msg,
+                  time: time,
+                },
+              ],
+            };
+          }
+        } else {
+          arrMessages.arr[0] = {
+            date: date,
+            data: [
+              {
+                uid: id,
+                name: name,
+                content: msg,
+                time: time,
+              },
+            ],
+          };
+        }
+
+        await nextTick(); // 整理data(for updataing chatbox dom)
         goBack();
       });
+    };
+
+    watchEffect(async () => {
+      nameCus.value = store.state.showCusName;
+      arrMessages.arr = store.state.chatData.map((item) => item);
+      await nextTick();
+      show.value.scrollTo(0, show.value.scrollHeight);
     });
-    // send msg
-    const sandMsg = async () => {
+
+    // 發送訊息
+    const sandMsg = () => {
+      const sendTime = moment().format("LT"); // 發送時間
       if (messages.value) {
-        socket.emit("chat message", messages.value);
+        socket.emit("chatMessage", uid.value, userName.value, messages.value, sendTime);
         messages.value = "";
       }
     };
+    // 滑到最新的訊息
     const goBack = () => {
       show.value.scrollTo({
         top: show.value.scrollHeight,
@@ -146,13 +149,47 @@ export default {
       });
       isShowBack.value = false;
     };
+    // 顯示/隱藏回到最新消息的按鈕
     const showBack = () => {
+      // 滾輪不在底時
       if (show.value.clientHeight + show.value.scrollTop < show.value.scrollHeight) {
         isShowBack.value = true;
       }
+      // 滾輪到底時
       if (show.value.clientHeight + show.value.scrollTop === show.value.scrollHeight) {
         isShowBack.value = false;
       }
+      // 滾輪到最上面時
+      if (show.value.scrollTop == 0) {
+        olderMsg(); // 要去撈更舊的對話紀錄
+      }
+    };
+    // 滾輪到最上面時，要去撈更舊的對話紀錄 (模擬)
+    const olderMsg = () => {
+      const newMsgData = {
+        date: "2022-02-28",
+        data: [
+          {
+            uid: 234,
+            name: "Amy",
+            content: "DB go test1",
+            time: "7:31 AM",
+          },
+          {
+            uid: 123,
+            name: "Sara",
+            content: "DB go test2",
+            time: "7:33 AM",
+          },
+          {
+            uid: 234,
+            name: "Amy",
+            content: "DB go test3",
+            time: "8:00 AM",
+          },
+        ],
+      };
+      arrMessages.arr.unshift(newMsgData);
     };
 
     return {
@@ -164,6 +201,7 @@ export default {
       showBack,
       isShowBack,
       goBack,
+      nameCus,
     };
   },
 };
@@ -172,6 +210,36 @@ export default {
 .msgContent {
   position: relative;
 }
+/* 狀態列 */
+.cusData,
+.cusSet {
+  display: flex;
+}
+.cusData {
+  align-items: center;
+  padding: 20px 10px;
+  border-bottom: 1px solid rgb(209, 209, 209);
+  width: 90%;
+  justify-content: space-between;
+  margin: 10px auto 30px auto;
+}
+.cusSet div {
+  width: 100px;
+  text-align: center;
+  padding: 5px 8px;
+  margin-left: 5px;
+  border-radius: 20px;
+  border: 1px solid rgb(228, 228, 228);
+  cursor: pointer;
+}
+.cusUserName {
+  font-size: 20px;
+  font-weight: bold;
+}
+.checked {
+  background: rgb(228, 228, 228);
+}
+/* chat box */
 ul {
   width: 92%;
   margin: 20px auto;
@@ -201,6 +269,7 @@ ul::-webkit-scrollbar-track {
   background: rgba(189, 189, 189, 0.1);
 }
 
+/* 傳訊息 */
 form {
   width: 94%;
   padding: 8px 12px;
@@ -216,7 +285,9 @@ form input[type="text"] {
   width: calc(100% - 32px);
 }
 .sendBtn {
-  width: 32px;
+  width: 42px;
+  border-radius: 0;
+  background: none;
 }
 .sendBtn img {
   width: 100%;
@@ -258,6 +329,9 @@ li > .mine > div {
   margin: 2px 0 0 4px;
   background: rgb(209, 209, 209);
 }
+.mine .time {
+  text-align: right;
+}
 .zoneTime {
   text-align: center;
   font-size: 8px;
@@ -283,36 +357,9 @@ li > .mine > div {
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
   cursor: pointer;
 }
+/* 回到最新訊息的按鈕 */
 .goBack img {
   width: 100%;
   opacity: 0.7;
-}
-.cusData,
-.cusSet {
-  display: flex;
-}
-.cusData {
-  align-items: center;
-  padding: 20px 10px;
-  border-bottom: 1px solid rgb(209, 209, 209);
-  width: 90%;
-  justify-content: space-between;
-  margin: 10px auto 30px auto;
-}
-.cusSet div {
-  width: 100px;
-  text-align: center;
-  padding: 5px 8px;
-  margin-left: 5px;
-  border-radius: 20px;
-  border: 1px solid rgb(228, 228, 228);
-  cursor: pointer;
-}
-.cusUserName {
-  font-size: 20px;
-  font-weight: bold;
-}
-.checked {
-  background: rgb(228, 228, 228);
 }
 </style>

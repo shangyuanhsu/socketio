@@ -9,6 +9,7 @@
         :name="item.name"
         :category="item.category"
         :lastMsg="item.msg"
+        @click="showRoom(item.roomId, item.name)"
       />
     </div>
   </div>
@@ -16,6 +17,7 @@
 
 <script>
 import { onMounted, reactive } from "vue";
+import { useStore } from "vuex";
 import MsgSearch from "@/components/MsgSearch.vue";
 import MsgSet from "@/components/MsgSet.vue";
 import MsgBox from "@/components/MsgBox.vue";
@@ -27,19 +29,23 @@ export default {
     MsgSet,
     MsgBox,
   },
-  setup() {
-    const arrMyFriendBox = reactive({
-      arr: [
-        { name: "Amy", category: "1", msg: "last text" },
-        { name: "Tom", category: "2", msg: "last text" },
-        { name: "Leo", category: "3", msg: "last text" },
-      ],
-    });
+  emits: ["updataChatData"],
+  setup(props, context) {
+    const store = useStore();
+    const arrMyFriendBox = reactive({ arr: [] });
     //開始
-    onMounted(() => {});
+    onMounted(() => {
+      store.dispatch("selectUserMsgData");
+      arrMyFriendBox.arr = store.state.allRoomBox.map((item) => item);
+    });
+    const showRoom = (roomId, name) => {
+      store.dispatch("insertshowRoomId", { roomId, name });
+      context.emit("updataChatData", roomId);
+    };
 
     return {
       arrMyFriendBox,
+      showRoom,
     };
   },
 };

@@ -5,27 +5,40 @@
     </div>
     <div class="boxData">
       <div>
-        <div :class="[{category} ,whichCategory === 'Facebook' ? 'categoryFb' :whichCategory === 'Line' ?'categoryLine':'']">{{whichCategory}}</div>
+        <div
+          :class="[
+            { category },
+            whichCategory === 'Facebook'
+              ? 'categoryFb'
+              : whichCategory === 'Line'
+              ? 'categoryLine'
+              : '',
+          ]"
+        >
+          {{ whichCategory }}
+        </div>
         <div class="time">Monday</div>
       </div>
-      <div class="otherUser">{{cusName}}</div>
-      <div>text msg</div>
+      <div class="otherUser">{{ cusName }}</div>
+      <div>{{ cusMsg }}</div>
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted ,ref} from "vue";
+import { onMounted, ref } from "vue";
 
 export default {
   name: "MsgBox",
-  props:{
-   name: String,
-   category:String,
+  props: {
+    name: String,
+    category: String,
+    lastMsg: String,
   },
   setup(props) {
     const cusName = ref("");
     const whichCategory = ref("");
+    const cusMsg = ref("");
     const arrSearch = {
       arr: [
         { id: "0", title: "All" },
@@ -37,13 +50,17 @@ export default {
     //開始
     onMounted(() => {
       cusName.value = props.name;
-      whichCategory.value = arrSearch.arr.filter(item=>item.id === props.category)[0].title;
-      console.log( whichCategory.value );
+      cusMsg.value = props.lastMsg;
+      whichCategory.value = arrSearch.arr.filter(
+        (item) => item.id === props.category
+      )[0].title;
+      // console.log( whichCategory.value );
     });
 
     return {
       cusName,
-      whichCategory
+      whichCategory,
+      cusMsg,
     };
   },
 };
@@ -55,6 +72,7 @@ export default {
   align-items: center;
   justify-content: space-between;
   padding: 20px 10px;
+  cursor: pointer;
 }
 .msgBox:not(:first-child) {
   border-top: 1px solid rgb(243, 243, 243);
@@ -81,18 +99,16 @@ export default {
   font-size: 10px;
 }
 .category {
-    background-color: rgb(237, 237, 237);
+  background-color: rgb(237, 237, 237);
 
   padding: 2px 4px;
   border-radius: 4px;
 }
-.categoryLine{
+.categoryLine {
   background-color: rgb(213, 244, 213);
-
 }
-.categoryFb{
+.categoryFb {
   background-color: rgb(202, 222, 235);
-
 }
 .boxData .otherUser {
   font-size: 20px;
