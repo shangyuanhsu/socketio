@@ -3,18 +3,20 @@
     <MsgNavbar />
     <main>
       <MsgSide @updataChatData="updataChatData" />
-      <MsgContent />
+      <MsgContent :key="componentKey" />
     </main>
   </div>
 </template>
 
 <script>
 import { useStore } from "vuex";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
 import router from "@/router";
 import MsgNavbar from "@/components/MsgNavbar.vue";
 import MsgSide from "@/components/MsgSide.vue";
 import MsgContent from "@/components/MsgContent.vue";
+import { io } from "socket.io-client";
+
 export default {
   name: "MsgView",
   components: {
@@ -24,22 +26,32 @@ export default {
   },
   setup() {
     const store = useStore();
-
+    const componentKey = ref("");
+    const socket = io("http://localhost:3000/"); // 聊天室連線
     //開始
     onMounted(() => {
       if (!store.state.userId) {
+        socket.on("disconnect");
         alert("ID ERROR !");
         router.push({ name: "login" });
       } else {
         updataChatData(store.state.showRoomId);
       }
+
+      // 有沒有訊息現在在server上
+      socket.emit("checkedNewMsg", store.state.userId);
+      socket.on("checkedNewMsg", function (data) {
+        console.log(data);
+      });
     });
     const updataChatData = (roomId) => {
       store.dispatch("selectRoomId", roomId);
+      componentKey.value = roomId;
     };
 
     return {
       updataChatData,
+      componentKey,
     };
   },
 };
@@ -48,5 +60,10 @@ export default {
 main {
   display: grid;
   grid-template-columns: 380px 1fr;
+}
+@media (max-width: 955px) {
+  main {
+    grid-template-columns: 1fr;
+  }
 }
 </style>

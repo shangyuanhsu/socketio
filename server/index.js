@@ -7,43 +7,67 @@ const io = require("socket.io")(http, {
 const port = process.env.PORT || 3000;
 
 const users = [];
+const msgArr = {};
 
 function userJoin(id, username, room) {
+    console.log(username, room);
     const user = { id, username, room };
-    users.push(user);
+    let arr = users.filter(item => item.username == username && item.room == room);
+    if (arr.length == 0 && username && room) {
+        users.push(user);
+    }
+    console.log(users);
     return user;
 }
 
 function userLeave(id) {
     const index = users.findIndex(user => user.id === id);
+
     if (index !== -1) {
         return users.splice(index, 1)[0];
     }
 }
 
+
 io.on('connection', (socket) => {
+    // 想要做有新訊息用
+    socket.on('checkedNewMsg', (uid) => {
+        let obj = {};
+        for (var i in msgArr) {
+            const arr = msgArr[i].filter(x => x.userId == uid || x.cusuid == uid);
+            if (arr.length != 0) {
+                obj[i] = arr.map(x => x);
+            }
+        }
+        io.emit('checkedNewMsg', obj);
+    });
     // 聊天室的小房間
     socket.on('joinRoom', ({ username, room }) => {
         const user = userJoin(socket.id, username, room);
-        console.log("a", user.room);
+
         socket.join(user.room);
 
-
         // 傳訊息要互丟的資訊
-        socket.on('chatMessage', (id, name, msg, time) => {
-            console.log("b", user.room);
-            io.to(user.room).emit('chatMessage', id, name, msg, time);
-            console.log(socket.id);
-            console.log(msg);
+        socket.on('chatMessage', (id, cusuid, name, msg, time) => {
+            io.to(user.room).emit('chatMessage', id, cusuid, name, msg, time);
+            if (msgArr[user.room]) {
+                msgArr[user.room].push({ userId: name, cusuid: cusuid, txt: msg, status: false });
+            } else {
+                msgArr[user.room] = [];
+                msgArr[user.room].push({ userId: name, cusuid: cusuid, txt: msg, status: false });
+            }
         });
+
     });
-
-
+    // 離開聊天室
     socket.on('disconnect', () => {
         userLeave(socket.id);
     });
 
 });
+
+
+
 
 http.listen(port, () => {
     console.log(`listening on *:${port}`);

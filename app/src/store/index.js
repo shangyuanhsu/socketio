@@ -6,6 +6,7 @@ export default createStore({
     userName: "user",
     showRoomId: "",
     showCusName: "",
+    showCusId: "",
     allRoomBox: [],
     chatData: []
   },
@@ -21,6 +22,7 @@ export default createStore({
 
       state.showRoomId = data.roomId;
       state.showCusName = data.name;
+      state.showCusId = data.cusId;
     },
     updatatRoomIdData(state, data) {
       state.chatData = data;
@@ -41,28 +43,34 @@ export default createStore({
         { id: 456, name: "Loe" },
       ]
       const who = userdata.filter(user => user.id === id);
-      const name = who.length !== 0 ? who[0].name : "user";
-      commit('changeUserId', { id: id, name: name });
-
+      if (who.length !== 0) {
+        const name = who.length !== 0 ? who[0].name : "user";
+        commit('changeUserId', { id: id, name: name });
+      }
     },
     // 抓使用者有的聊天紀錄
     selectUserMsgData({ state, commit, dispatch }) {
       let data = [];
       if (state.userId === 123) {
         data = [
-          { roomId: "123-234", name: "Amy", category: "1", msg: "last text" },
-          { roomId: "123-345", name: "Tom", category: "2", msg: "last text" },
-          { roomId: "123-456", name: "Leo", category: "3", msg: "last text" },
+          { roomId: "123-234",cusId:234, name: "Amy", category: "1", msg: "last text", status: "0" },
+          { roomId: "123-345",cusId:345, name: "Tom", category: "2", msg: "last text", status: "1" },
+          { roomId: "123-456",cusId:456, name: "Leo", category: "3", msg: "last text", status: "0" },
         ];
       }
       if (state.userId === 234) {
         data = [
-          { roomId: "123-234", name: "Sara", category: "1", msg: "last text" },
+          { roomId: "123-234",cusId:123, name: "Sara", category: "1", msg: "last text", status: "0" },
         ];
       }
       if (state.userId === 345) {
         data = [
-          { roomId: "123-345", name: "Sara", category: "2", msg: "last text" },
+          { roomId: "123-345",cusId:123, name: "Sara", category: "2", msg: "last text", status: "1" },
+        ];
+      }
+      if (state.userId === 456) {
+        data = [
+         
         ];
       }
 
@@ -75,7 +83,6 @@ export default createStore({
     },
     insertshowRoomId({ commit }, id) {
       commit('updatashowRoomId', id);
-      
     },
     selectRoomId({ commit }, id) {
 
@@ -172,7 +179,8 @@ export default createStore({
       }
 
       commit('updatatRoomIdData', data);
-    }
+    },
+
   },
   getters: {
     // 像 computed 一樣？？，運算處理 state 資料

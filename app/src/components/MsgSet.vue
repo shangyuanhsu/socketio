@@ -17,7 +17,9 @@ import { onMounted, reactive } from "vue";
 export default {
   name: "MsgSet",
   components: {},
-  setup() {
+  emits: ["whichProcess"],
+
+  setup(props, context) {
     const arrProcess = reactive({
       arr: [
         { id: 0, title: "Processed", checked: true },
@@ -36,6 +38,8 @@ export default {
           checked: index === ind ? true : false,
         };
       });
+      const p = arrProcess.arr.filter((item) => item.checked);
+      context.emit("whichProcess", p[0].id);
     };
     return {
       arrProcess,

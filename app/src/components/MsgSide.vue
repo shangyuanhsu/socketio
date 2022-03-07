@@ -1,7 +1,7 @@
 <template>
   <div class="msgSide">
-    <MsgSearch />
-    <MsgSet />
+    <MsgSearch @whichSearch="whichSearch" />
+    <MsgSet @whichProcess="whichProcess" />
     <div class="allMsgBox">
       <MsgBox
         v-for="(item, index) in arrMyFriendBox.arr"
@@ -9,6 +9,7 @@
         :name="item.name"
         :category="item.category"
         :lastMsg="item.msg"
+        v-show="process === item.status && (search === item.category || search === '0')"
         @click="showRoom(item.roomId, item.name)"
       />
     </div>
@@ -16,7 +17,7 @@
 </template>
 
 <script>
-import { onMounted, reactive } from "vue";
+import { onMounted, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import MsgSearch from "@/components/MsgSearch.vue";
 import MsgSet from "@/components/MsgSet.vue";
@@ -32,6 +33,8 @@ export default {
   emits: ["updataChatData"],
   setup(props, context) {
     const store = useStore();
+    const process = ref("0");
+    const search = ref("0");
     const arrMyFriendBox = reactive({ arr: [] });
     //開始
     onMounted(() => {
@@ -42,10 +45,21 @@ export default {
       store.dispatch("insertshowRoomId", { roomId, name });
       context.emit("updataChatData", roomId);
     };
+    const whichSearch = (id) => {
+      search.value = String(id);
+      console.log(search.value);
+    };
+    const whichProcess = (id) => {
+      process.value = String(id);
+    };
 
     return {
       arrMyFriendBox,
       showRoom,
+      whichProcess,
+      process,
+      whichSearch,
+      search,
     };
   },
 };
@@ -80,5 +94,12 @@ export default {
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
   border-radius: 0;
   background: rgba(189, 189, 189, 0.1);
+}
+
+@media (max-width: 955px) {
+  .msgSide {
+    position: absolute;
+    left: -400px;
+  }
 }
 </style>

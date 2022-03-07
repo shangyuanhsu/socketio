@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <select v-model="witchSearch">
+    <select v-model="witchSearch" @change="changeSearch">
       <option v-for="(item, index) in arrSearch.arr" :key="index" :value="item.id">
         {{ item.title }}
       </option>
@@ -14,7 +14,8 @@ import { onMounted, reactive, ref } from "vue";
 export default {
   name: "MsgSearch",
   components: {},
-  setup() {
+  emits: ["whichSearch"],
+  setup(props, context) {
     const arrSearch = reactive({
       arr: [
         { id: "0", title: "All" },
@@ -26,10 +27,13 @@ export default {
     const witchSearch = ref("0");
     //開始
     onMounted(() => {});
-
+    const changeSearch = () => {
+      context.emit("whichSearch", witchSearch.value);
+    };
     return {
       arrSearch,
       witchSearch,
+      changeSearch,
     };
   },
 };

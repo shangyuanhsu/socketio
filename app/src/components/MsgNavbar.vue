@@ -1,6 +1,6 @@
 <template>
   <div class="msgNavbar">
-    <div class="hamburgerMenu">
+    <div class="hamburgerMenu" @click="showMsgBox">
       <span></span>
       <span></span>
       <span></span>
@@ -26,8 +26,10 @@ export default {
     onMounted(() => {
       userName.value = store.state.userName;
     });
+    const showMsgBox = () => {};
     return {
       userName,
+      showMsgBox,
     };
   },
 };
@@ -44,7 +46,7 @@ export default {
   padding: 10px 20px;
 }
 .hamburgerMenu {
-  display: none;
+  cursor: pointer;
   display: flex;
   flex-direction: column;
 }
@@ -70,5 +72,10 @@ export default {
   height: 45px;
   border-radius: 70%;
   overflow: hidden;
+}
+@media (max-width: 955px) {
+  .hamburgerMenu span {
+    display: block;
+  }
 }
 </style>
