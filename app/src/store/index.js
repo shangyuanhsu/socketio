@@ -10,7 +10,8 @@ export default createStore({
     showCusName: "",//對方名字
     showCusId: "",//對方id
     allRoomBox: [],//使用者擁有的聊天室
-    chatData: []//當前聊天的內容
+    chatData: [],//當前聊天的內容
+    ham:false
   },
   mutations: {// 負責改變 state 裏的資料
     changeUserId(state, data) {
@@ -29,7 +30,10 @@ export default createStore({
     },
     updatatRoomIdData(state, data) {
       state.chatData = data;
-    }
+    },
+    changeHam(state, data) {
+      state.ham = data;
+    },
 
   },
   actions: {
@@ -197,6 +201,9 @@ export default createStore({
 
       commit('updatatRoomIdData', data);
     },
+    goChangeHam({ commit }, status){
+      commit('changeHam', status);
+    }
 
   },
   getters: {
