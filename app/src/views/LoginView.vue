@@ -9,17 +9,16 @@
 <script>
 import { useStore } from "vuex";
 import { onMounted, ref } from "vue";
-import router from "@/router";
+// import router from "@/router";
 export default {
   name: "LoginView",
   setup() {
     const store = useStore();
     const uid = ref(""); //輸入使用者ID
     onMounted(() => {});
-    //
+    // 使用者輸入ID
     const getUserId = () => {
       store.dispatch("insertUserId", Number(uid.value));
-      router.push({ name: "home" });
     };
     return {
       uid,

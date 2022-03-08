@@ -1,24 +1,32 @@
 # socketio
 
+## doing
+
+## use
+Vue + Socket.IO + NodeJS + mySQL 
+
 ## Project setup
+### socketio > app
 ```
 npm install
 ```
-
-### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+### socketio > app > api
 ```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
+node sever.js
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### socketio > server
+```
+npm install
+```
+```
+node index.js
+```
+
+### socketio > db
+data import/restore
+

@@ -30,6 +30,7 @@ export default {
     const socket = io("http://localhost:3000/"); // 聊天室連線
     //開始
     onMounted(() => {
+      console.log(store.state.userId);
       if (!store.state.userId) {
         socket.on("disconnect");
         alert("ID ERROR !");
