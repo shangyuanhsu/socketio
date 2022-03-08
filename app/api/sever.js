@@ -17,11 +17,11 @@ var con = mysql.createConnection({
 app.post('/getMember', function (req, res) {
     const data = req.body;
     con.connect(function (err) {
-        if (err) throw err;
+        // if (err) throw err;
         var uid = data.uid;
         var sql = 'SELECT * FROM member WHERE uid = ? and status = 0';
         con.query(sql, [uid], function (err, result) {
-            if (err) throw err;
+            // if (err) throw err;
             if (result.length > 0) {
                 res.json({ status: "success", result: result })
             } else {

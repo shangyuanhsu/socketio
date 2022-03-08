@@ -5,6 +5,7 @@ export default createStore({
   state: { // 所有在 store 裏的資料
     userId: null,//使用者id
     userName: "user",//使用者名字
+    permission: 0,//使用者權限
     showRoomId: "",//目前顯示的聊天室編號
     showCusName: "",//對方名字
     showCusId: "",//對方id
@@ -15,6 +16,7 @@ export default createStore({
     changeUserId(state, data) {
       state.userId = data.id;
       state.userName = data.name;
+      state.permission = data.permission;
     },
     insertRoomBox(state, data) {
       state.allRoomBox = data;
@@ -48,9 +50,11 @@ export default createStore({
       }).then((response) => {
         return response.json();
       }).then((data) => {
+        console.log(data);
         if (data.status === "success") {
           const name = data.result[0].name;
-          commit('changeUserId', { id: id, name: name });
+          const permission = data.result[0].permission;
+          commit('changeUserId', { id: id, name: name, permission: permission });
           router.push({ name: "home" });
         } else {
           alert("ID ERROR !");

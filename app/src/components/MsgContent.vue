@@ -3,7 +3,7 @@
     <!-- status -->
     <div class="cusData">
       <div class="cusUserName">{{ nameCus }}</div>
-      <div class="cusSet">
+      <div class="cusSet" v-if="isPermission">
         <div>blacklist</div>
         <div class="checked">processing</div>
         <div>completed</div>
@@ -72,6 +72,7 @@ export default {
   setup() {
     const store = useStore();
     const uid = ref(null); // 使用者ID
+    const isPermission = ref(false); // 使用者權限
     const userName = ref(""); //使用者名字
     const show = ref(null); // 對話框的dom element
     const moreHeightDom = ref(null); // textarea 的dom element
@@ -91,6 +92,7 @@ export default {
       roomId.value = store.state.showRoomId;
       nameCus.value = store.state.showCusName;
       cusId.value = store.state.showCusId;
+      isPermission.value = store.state.permission === 1;
       arrMessages.arr = store.state.chatData.map((item) => item);
       init();
     });
@@ -247,6 +249,7 @@ export default {
       moreHeight,
       moreHeightDom,
       checkmoreHeight,
+      isPermission,
     };
   },
 };
@@ -280,6 +283,7 @@ export default {
 .cusUserName {
   font-size: 20px;
   font-weight: bold;
+  padding: 4px 0;
 }
 .checked {
   background: rgb(228, 228, 228);

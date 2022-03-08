@@ -1,6 +1,6 @@
 <template>
   <div class="msgSide">
-    <MsgSearch @whichSearch="whichSearch" />
+    <MsgSearch @whichSearch="whichSearch" v-if="isPermission" />
     <MsgSet @whichProcess="whichProcess" />
     <div class="allMsgBox">
       <MsgBox
@@ -33,11 +33,13 @@ export default {
   emits: ["updataChatData"],
   setup(props, context) {
     const store = useStore();
+    const isPermission = ref(false);
     const process = ref("0");
     const search = ref("0");
     const arrMyFriendBox = reactive({ arr: [] });
     //開始
     onMounted(() => {
+      isPermission.value = store.state.permission === 1;
       store.dispatch("selectUserMsgData");
       arrMyFriendBox.arr = store.state.allRoomBox.map((item) => item);
     });
@@ -60,6 +62,7 @@ export default {
       process,
       whichSearch,
       search,
+      isPermission,
     };
   },
 };

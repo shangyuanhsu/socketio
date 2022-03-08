@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `chatroom` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `chatroom`;
 -- MySQL dump 10.13  Distrib 8.0.28, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: chatroom
@@ -16,6 +14,31 @@ USE `chatroom`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `categoryroom`
+--
+
+DROP TABLE IF EXISTS `categoryroom`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `categoryroom` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(45) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categoryroom`
+--
+
+LOCK TABLES `categoryroom` WRITE;
+/*!40000 ALTER TABLE `categoryroom` DISABLE KEYS */;
+INSERT INTO `categoryroom` VALUES (1,'All',0),(2,'Facebook',0),(3,'Line',0),(4,'Other',0);
+/*!40000 ALTER TABLE `categoryroom` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `member`
@@ -39,7 +62,7 @@ CREATE TABLE `member` (
 
 LOCK TABLES `member` WRITE;
 /*!40000 ALTER TABLE `member` DISABLE KEYS */;
-INSERT INTO `member` VALUES (1,'Sara',0,0),(2,'Amy',0,0),(3,'Tom',0,0),(4,'Loe',0,0),(5,'Judy',0,0);
+INSERT INTO `member` VALUES (1,'Sara',0,1),(2,'Amy',0,0),(3,'Tom',0,0),(4,'Loe',0,0),(5,'Judy',0,0);
 /*!40000 ALTER TABLE `member` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -131,4 +154,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-03-08 16:34:00
+-- Dump completed on 2022-03-08 17:00:27
