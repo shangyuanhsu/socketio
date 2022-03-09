@@ -16,7 +16,7 @@ npm run serve
 
 ### socketio > app > api
 ```
-node sever.js
+node app.js
 ```
 
 ### socketio > server

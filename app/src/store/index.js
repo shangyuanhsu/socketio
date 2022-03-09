@@ -11,7 +11,7 @@ export default createStore({
     showCusId: "",//對方id
     allRoomBox: [],//使用者擁有的聊天室
     chatData: [],//當前聊天的內容
-    ham:false
+    ham: false
   },
   mutations: {// 負責改變 state 裏的資料
     changeUserId(state, data) {
@@ -54,7 +54,7 @@ export default createStore({
       }).then((response) => {
         return response.json();
       }).then((data) => {
-        console.log(data);
+        // console.log(data);
         if (data.status === "success") {
           const name = data.result[0].name;
           const permission = data.result[0].permission;
@@ -64,42 +64,36 @@ export default createStore({
           alert("ID ERROR !");
         }
       }).catch((err) => {
-        console.log('錯誤:', err);
-
+        console.log('錯誤getMember:', err);
       })
-
     },
     // 抓使用者有的聊天紀錄
     selectUserMsgData({ state, commit, dispatch }) {
-      let data = [];
-      if (state.userId == 1) {
-        data = [
-          { roomId: "123-234", cusId: 2, name: "Amy", category: "1", msg: "last text", status: "0" },
-          { roomId: "123-345", cusId: 3, name: "Tom", category: "2", msg: "last text", status: "1" },
-          { roomId: "123-456", cusId: 4, name: "Leo", category: "3", msg: "last text", status: "0" },
-        ];
-      }
-      if (state.userId == 2) {
-        data = [
-          { roomId: "123-234", cusId: 1, name: "Sara", category: "1", msg: "last text", status: "0" },
-        ];
-      }
-      if (state.userId == 3) {
-        data = [
-          { roomId: "123-345", cusId: 1, name: "Sara", category: "2", msg: "last text", status: "1" },
-        ];
-      }
-      if (state.userId == 4) {
-        data = [
 
-        ];
-      }
-
-      commit('insertRoomBox', data);
-      if (state.userId) {
-        dispatch("insertshowRoomId", data[0]);
-        dispatch("selectRoomId", data[0].roomId);
-      }
+      fetch('http://localhost:4000/getMsgLog', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          uid: state.userId,
+        })
+      }).then((response) => {
+        return response.json();
+      }).then((data) => {
+        console.log(data);
+        if (data.status === "success") {
+          commit('insertRoomBox', data);
+          if (state.userId) {
+            // console.log(data.result[0]);
+            // console.log(data.result[0].roomId);
+            dispatch("insertshowRoomId", data.result[0]);
+            dispatch("selectRoomId", data.result[0].roomId);
+          }
+        }
+      }).catch((err) => {
+        console.log('錯誤getMember:', err);
+      })
 
     },
     insertshowRoomId({ commit }, id) {
@@ -108,25 +102,25 @@ export default createStore({
     selectRoomId({ commit }, id) {
 
       let data = [];
-      if (id === "123-234") {
+      if (id == 1) {
         data = [
           {
             date: "Mar 1th 22",
             data: [
               {
-                uid: 234,
+                uid: 2,
                 name: "Amy",
                 content: "hello~",
                 time: "7:31 AM",
               },
               {
-                uid: 123,
+                uid: 1,
                 name: "Sara",
                 content: "🙌",
                 time: "7:33 AM",
               },
               {
-                uid: 234,
+                uid: 2,
                 name: "Amy",
                 content: "I need help",
                 time: "8:00 AM",
@@ -137,31 +131,31 @@ export default createStore({
             date: "Mar 2th 22",
             data: [
               {
-                uid: 123,
+                uid: 1,
                 name: "Sara",
                 content: "what happened",
                 time: "7:25 AM",
               },
               {
-                uid: 123,
+                uid: 1,
                 name: "Sara",
                 content: "??",
                 time: "7:40 AM",
               },
               {
-                uid: 234,
+                uid: 2,
                 name: "Amy",
                 content: "could u teach me vue?",
                 time: "8:10 AM",
               },
               {
-                uid: 234,
+                uid: 2,
                 name: "Amy",
                 content: "i can't build vue cli and can't new a project",
                 time: "8:22 AM",
               },
               {
-                uid: 234,
+                uid: 2,
                 name: "Amy",
                 content: "do u have time",
                 time: "9:12 AM",
@@ -170,44 +164,16 @@ export default createStore({
           },
         ];
       }
-      if (id === "123-345") {
-        data = [
-          {
-            date: "Mar 1th 22",
-            data: [
-              {
-                uid: 234,
-                name: "Tom",
-                content: "hello~",
-                time: "7:31 AM",
-              },
-              {
-                uid: 123,
-                name: "Sara",
-                content: "🙌",
-                time: "7:33 AM",
-              },
-              {
-                uid: 234,
-                name: "Tom",
-                content: "I need help",
-                time: "8:00 AM",
-              },
-            ],
-          },
-
-        ];
-      }
 
       commit('updatatRoomIdData', data);
     },
-    goChangeHam({ commit }, status){
+    goChangeHam({ commit }, status) {
       commit('changeHam', status);
     }
 
   },
   getters: {
-    // 像 computed 一樣？？，運算處理 state 資料
+    // 像 computed 一樣，運算處理 state 資料
     //==================================================
 
   },

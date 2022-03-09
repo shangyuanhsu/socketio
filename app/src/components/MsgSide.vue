@@ -34,8 +34,8 @@ export default {
   setup(props, context) {
     const store = useStore();
     const isPermission = ref(false);
-    const process = ref("0");
-    const search = ref("0");
+    const process = ref(0);
+    const search = ref(0);
     const arrMyFriendBox = reactive({ arr: [] });
     //開始
     onMounted(() => {

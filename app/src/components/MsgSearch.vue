@@ -18,10 +18,10 @@ export default {
   setup(props, context) {
     const arrSearch = reactive({
       arr: [
-        { id: "0", title: "All" },
-        { id: "1", title: "Facebook" },
-        { id: "2", title: "Line" },
-        { id: "3", title: "Other" },
+        { id: 0, title: "All" },
+        { id: 1, title: "Facebook" },
+        { id: 2, title: "Line" },
+        { id: 3, title: "Other" },
       ],
     });
     const witchSearch = ref("0");

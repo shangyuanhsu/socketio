@@ -200,19 +200,19 @@ export default {
         date: "2022-02-28",
         data: [
           {
-            uid: 234,
+            uid: 2,
             name: "Amy",
             content: "DB go test1",
             time: "7:31 AM",
           },
           {
-            uid: 123,
+            uid: 1,
             name: "Sara",
             content: "DB go test2",
             time: "7:33 AM",
           },
           {
-            uid: 234,
+            uid: 2,
             name: "Amy",
             content: "DB go test3",
             time: "8:00 AM",
