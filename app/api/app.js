@@ -20,6 +20,7 @@ con.connect(function (err) {
 
 // 確認會員身分
 app.post('/getMember', function (req, res) {
+   
     const data = req.body;
     const uid = data.uid;
     const sql = 'SELECT * FROM member WHERE uid = ? and status = 0';
@@ -36,24 +37,9 @@ app.post('/getMember', function (req, res) {
 
 // 抓使用者擁有的聊天室
 app.post('/getMsgLog', async function (req, res) {
-    const data = req.body;
-    const uid = data.uid;
 
-    let dataTem = {
-        status: "success",
-        result: []
-    };
-
-    const sql = `
-    SELECT * 
-    FROM chatroom.room
-    WHERE roomId in (
-    SELECT roomId 
-    FROM chatroom.userroom 
-    WHERE uid = ?)`;
-    con.query(sql, [uid], (err, result) => {
-        console.log("a")
-        result.forEach((item) => {
+    const eachFun = async (arr) => {
+        arr.forEach((item) => {
             const tem =
             {
                 roomId: 0,
@@ -89,15 +75,33 @@ app.post('/getMsgLog', async function (req, res) {
                 dataTem.result.push(tem);
             })
         })
+    }
+
+    const data = req.body;
+    const uid = data.uid;
+
+    let dataTem = {
+        status: "success",
+        result: []
+    };
+
+    const sql = `
+    SELECT * 
+    FROM chatroom.room
+    WHERE roomId in (
+    SELECT roomId 
+    FROM chatroom.userroom 
+    WHERE uid = ?)`;
+    con.query(sql, [uid], async (err, result) => {
+        console.log("a")
+        await eachFun(result);
         console.log("d")
         console.log("e")
         res.json(dataTem);
     });
+});
 
 
-
-
-})
 // server連線
 app.listen(4000, function () {
     console.log('port 4000')
