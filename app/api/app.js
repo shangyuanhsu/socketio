@@ -10,6 +10,7 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
     host: "localhost",
     user: "root",
+    port: 8889,
     password: "root",
     database: "chatroom"
 });
@@ -20,7 +21,7 @@ con.connect(function (err) {
 
 // 確認會員身分
 app.post('/getMember', function (req, res) {
-   
+
     const data = req.body;
     const uid = data.uid;
     const sql = 'SELECT * FROM member WHERE uid = ? and status = 0';
@@ -36,10 +37,17 @@ app.post('/getMember', function (req, res) {
 })
 
 // 抓使用者擁有的聊天室
-app.post('/getMsgLog', async function (req, res) {
+app.post('/getMsgLog',  (req, res) => {
 
-    const eachFun = async (arr) => {
-        arr.forEach((item) => {
+    const data = req.body;
+    const uid = data.uid;
+
+    let dataTem = {
+        status: "success",
+        result: []
+    };
+    const checkedMsg = (result) => {
+        return new Promise((resolve) => {
             const tem =
             {
                 roomId: 0,
@@ -55,10 +63,12 @@ app.post('/getMsgLog', async function (req, res) {
                     WHERE roomId = ?
                     order by msgId desc
                     limit 1`;
-            con.query(sql2, [item.roomId], function (err, result) {
-                console.log("b")
-                tem.roomId = result[0].roomId;
-                tem.msg = result[0].msgContent;
+            con.query(sql2, [result.roomId], function (err, result2) {
+                tem.roomId = result.roomId;
+                if (result2.length > 0) {
+                    tem.msg = result2[0].msgContent;
+                }
+
             })
             const sql3 = `
             SELECT *
@@ -67,23 +77,17 @@ app.post('/getMsgLog', async function (req, res) {
             JOIN chatroom.room on room.roomId = userroom.roomId
             WHERE userroom.roomId = ?
             AND userroom.uid != ?;`;
-            con.query(sql3, [item.roomId, data.uid], function (err, result) {
-                console.log("c")
-                tem.cusId = result[0].uid;
-                tem.name = result[0].name;
-                tem.status = result[0].process;
-                dataTem.result.push(tem);
+            con.query(sql3, [result.roomId, data.uid], function (err, result2) {
+                if (result2.length > 0) {
+                    tem.cusId = result2[0].uid;
+                    tem.name = result2[0].name;
+                    tem.status = result2[0].process;
+                }
+                resolve(tem);
+
             })
         })
     }
-
-    const data = req.body;
-    const uid = data.uid;
-
-    let dataTem = {
-        status: "success",
-        result: []
-    };
 
     const sql = `
     SELECT * 
@@ -93,12 +97,16 @@ app.post('/getMsgLog', async function (req, res) {
     FROM chatroom.userroom 
     WHERE uid = ?)`;
     con.query(sql, [uid], async (err, result) => {
-        console.log("a")
-        await eachFun(result);
-        console.log("d")
-        console.log("e")
+        async function asyncForEach(array, callback) {
+            for (let index = 0; index < array.length; index++) {
+                let val = await callback(array[index]);
+                dataTem.result[index] = val;
+            }
+        }
+        await asyncForEach(result, checkedMsg)
         res.json(dataTem);
     });
+
 });
 
 
