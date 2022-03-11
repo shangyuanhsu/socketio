@@ -32,7 +32,7 @@ export default {
   name: "MsgBox",
   props: {
     name: String,
-    category: String,
+    category: Number,
     lastMsg: String,
   },
   setup(props) {
@@ -41,10 +41,10 @@ export default {
     const cusMsg = ref("");
     const arrSearch = {
       arr: [
-        { id: "0", title: "All" },
-        { id: "1", title: "Facebook" },
-        { id: "2", title: "Line" },
-        { id: "3", title: "Other" },
+        { id: 0, title: "All" },
+        { id: 1, title: "Facebook" },
+        { id: 2, title: "Line" },
+        { id: 3, title: "Other" },
       ],
     };
     //開始

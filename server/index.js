@@ -34,7 +34,7 @@ io.on('connection', (socket) => {
     socket.on('checkedNewMsg', (uid) => {
         let obj = {};
         for (var i in msgArr) {
-            const arr = msgArr[i].filter(x => x.userId == uid || x.cusuid == uid);
+            const arr = msgArr[i].filter(x => x.userId == uid || x.cusId == uid);
             if (arr.length != 0) {
                 obj[i] = arr.map(x => x);
             }
@@ -48,13 +48,13 @@ io.on('connection', (socket) => {
         socket.join(user.room);
 
         // 傳訊息要互丟的資訊
-        socket.on('chatMessage', (id, cusuid, name, msg, time) => {
-            io.to(user.room).emit('chatMessage', id, cusuid, name, msg, time);
+        socket.on('chatMessage', (id, cusId, name, msg, time) => {
+            io.to(user.room).emit('chatMessage', id, cusId, name, msg, time);
             if (msgArr[user.room]) {
-                msgArr[user.room].push({ userId: name, cusuid: cusuid, txt: msg, status: false });
+                msgArr[user.room].push({ userId: name, cusuid: cusId, txt: msg, status: false });
             } else {
                 msgArr[user.room] = [];
-                msgArr[user.room].push({ userId: name, cusuid: cusuid, txt: msg, status: false });
+                msgArr[user.room].push({ userId: name, cusuid: cusId, txt: msg, status: false });
             }
         });
 

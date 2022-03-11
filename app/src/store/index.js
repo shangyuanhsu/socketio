@@ -1,6 +1,5 @@
 import { createStore } from 'vuex'
 import router from "@/router";
-
 export default createStore({
   state: { // 所有在 store 裏的資料
     userId: null,//使用者id
@@ -23,7 +22,6 @@ export default createStore({
       state.allRoomBox = data;
     },
     updatashowRoomId(state, data) {
-
       state.showRoomId = data.roomId;
       state.showCusName = data.name;
       state.showCusId = data.cusId;
@@ -60,6 +58,7 @@ export default createStore({
           const permission = data.result[0].permission;
           commit('changeUserId', { id: id, name: name, permission: permission });
           router.push({ name: "home" });
+
         } else {
           alert("ID ERROR !");
         }
@@ -81,91 +80,108 @@ export default createStore({
       }).then((response) => {
         return response.json();
       }).then((data) => {
-        console.log(data);
         if (data.status === "success") {
-          commit('insertRoomBox', data);
-          if (state.userId) {
-            // console.log(data.result[0]);
-            // console.log(data.result[0].roomId);
-            dispatch("insertshowRoomId", data.result[0]);
-            dispatch("selectRoomId", data.result[0].roomId);
-          }
+          // console.log(data)
+          commit('insertRoomBox', data.result);
+          dispatch("insertshowRoomId", data.result[0]);
+          dispatch("selectRoomId", data.result[0].roomId);
         }
       }).catch((err) => {
         console.log('錯誤getMember:', err);
       })
 
     },
+    // 聊天室ID
     insertshowRoomId({ commit }, id) {
       commit('updatashowRoomId', id);
     },
+    //聊天室內容
     selectRoomId({ commit }, id) {
+      fetch(`http://localhost:4000/getRoomIdData`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          roomId: id,
+        })
+      }).then((response) => {
+        return response.json();
+      }).then((data) => {
+        if (data.status === "success") {
+          commit('updatatRoomIdData', data.result);
+        }
+      }).catch((err) => {
+        console.log('錯誤getMember:', err);
+      })
 
-      let data = [];
-      if (id == 1) {
-        data = [
-          {
-            date: "Mar 1th 22",
-            data: [
-              {
-                uid: 2,
-                name: "Amy",
-                content: "hello~",
-                time: "7:31 AM",
-              },
-              {
-                uid: 1,
-                name: "Sara",
-                content: "🙌",
-                time: "7:33 AM",
-              },
-              {
-                uid: 2,
-                name: "Amy",
-                content: "I need help",
-                time: "8:00 AM",
-              },
-            ],
-          },
-          {
-            date: "Mar 2th 22",
-            data: [
-              {
-                uid: 1,
-                name: "Sara",
-                content: "what happened",
-                time: "7:25 AM",
-              },
-              {
-                uid: 1,
-                name: "Sara",
-                content: "??",
-                time: "7:40 AM",
-              },
-              {
-                uid: 2,
-                name: "Amy",
-                content: "could u teach me vue?",
-                time: "8:10 AM",
-              },
-              {
-                uid: 2,
-                name: "Amy",
-                content: "i can't build vue cli and can't new a project",
-                time: "8:22 AM",
-              },
-              {
-                uid: 2,
-                name: "Amy",
-                content: "do u have time",
-                time: "9:12 AM",
-              },
-            ],
-          },
-        ];
-      }
 
-      commit('updatatRoomIdData', data);
+
+      // let data = [];
+      // if (id == 1) {
+      //   data = [
+      //     {
+      //       date: "Mar 1th 22",
+      //       data: [
+      //         {
+      //           uid: 2,
+      //           name: "Amy",
+      //           content: "hello~",
+      //           time: "7:31 AM",
+      //         },
+      //         {
+      //           uid: 1,
+      //           name: "Sara",
+      //           content: "🙌",
+      //           time: "7:33 AM",
+      //         },
+      //         {
+      //           uid: 2,
+      //           name: "Amy",
+      //           content: "I need help",
+      //           time: "8:00 AM",
+      //         },
+      //       ],
+      //     },
+      //     {
+      //       date: "Mar 2th 22",
+      //       data: [
+      //         {
+      //           uid: 1,
+      //           name: "Sara",
+      //           content: "what happened",
+      //           time: "7:25 AM",
+      //         },
+      //         {
+      //           uid: 1,
+      //           name: "Sara",
+      //           content: "??",
+      //           time: "7:40 AM",
+      //         },
+      //         {
+      //           uid: 2,
+      //           name: "Amy",
+      //           content: "could u teach me vue?",
+      //           time: "8:10 AM",
+      //         },
+      //         {
+      //           uid: 2,
+      //           name: "Amy",
+      //           content: "i can't build vue cli and can't new a project",
+      //           time: "8:22 AM",
+      //         },
+      //         {
+      //           uid: 2,
+      //           name: "Amy",
+      //           content: "do u have time",
+      //           time: "9:12 AM",
+      //         },
+      //       ],
+      //     },
+      //   ];
+      // }
+
+
     },
     goChangeHam({ commit }, status) {
       commit('changeHam', status);
@@ -175,7 +191,12 @@ export default createStore({
   getters: {
     // 像 computed 一樣，運算處理 state 資料
     //==================================================
-
+    getAllRoomBox: (state) => {
+      return state.allRoomBox
+    },
+    getChatData:  (state) => {
+      return state.chatData
+    }
   },
   modules: {
     // 按需求分拆 module

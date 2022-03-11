@@ -26,7 +26,7 @@ export default {
   },
   setup() {
     const store = useStore();
-    const componentKey = ref("");
+    const componentKey = ref(0);
     const socket = io("http://localhost:3000/"); // 聊天室連線
     //開始
     onMounted(() => {
@@ -41,8 +41,8 @@ export default {
 
       // 有沒有訊息現在在server上
       socket.emit("checkedNewMsg", store.state.userId);
-      socket.on("checkedNewMsg", function (data) {
-        console.log(data);
+      socket.on("checkedNewMsg", function () {
+        // console.log(data);
       });
     });
     const updataChatData = (roomId) => {

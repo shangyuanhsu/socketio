@@ -13,23 +13,22 @@
       <!-- chat box -->
       <ul ref="show" @wheel="showBack">
         <li v-for="(item, ind) in arrMessages.arr" :key="ind">
-          <p class="zoneTime">{{ item.date }}</p>
+          <p class="zoneTime">
+            {{ item.date === todayDate ? "today" : item.date }}
+          </p>
           <div
             v-for="(msg, index) in item.data"
             :key="index"
             :class="[msg.uid === uid ? 'mine' : '']"
           >
-            <p class="userName">{{ msg.uid === uid ? "" : msg.name }}</p>
+            <p class="userName">{{ msg.uid === uid ? "" : nameCus }}</p>
             <div v-if="msg.uid === uid">
-              <p class="time">{{ msg.time }}</p>
-              <p
-                class="content"
-                v-html="msg.content.replace(/(\r\n)|(\n)/g, '<br />')"
-              ></p>
+              <p class="time">{{ msg.msgTime }}</p>
+              <p class="content" v-html="msg.msgContent"></p>
             </div>
             <div v-else>
-              <p class="content">{{ msg.content }}</p>
-              <p class="time">{{ msg.time }}</p>
+              <p class="content" v-html="msg.msgContent"></p>
+              <p class="time">{{ msg.msgTime }}</p>
             </div>
           </div>
         </li>
@@ -60,7 +59,7 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, reactive, ref, nextTick } from "vue";
+import { onMounted, onUnmounted, reactive, ref, nextTick, computed, watch } from "vue";
 import { useStore } from "vuex";
 import moment from "moment";
 import { io } from "socket.io-client";
@@ -82,42 +81,61 @@ export default {
     const nameCus = ref(""); // 聊天對像的名字
     const cusId = ref(""); // 聊天對像的ID
     const arrMessages = reactive({ arr: [] }); // 對話data
+    const todayDate = ref("");
 
     const socket = io("http://localhost:3000/"); // 聊天室連線
 
     // 開始
     onMounted(() => {
+      todayDate.value = moment().format("MMM Do YY");
       uid.value = store.state.userId;
       userName.value = store.state.userName;
       roomId.value = store.state.showRoomId;
       nameCus.value = store.state.showCusName;
       cusId.value = store.state.showCusId;
       isPermission.value = store.state.permission === 1;
-      arrMessages.arr = store.state.chatData.map((item) => item);
+      console.log("onMounted", roomId.value);
+      // arrMessages.arr = store.state.chatData;
+      console.log("a");
+      arrMessages.arr = a;
       init();
     });
+
+    const a = computed(() => {
+      return store.getters.getChatData;
+    });
+
     onUnmounted(() => {
       console.log("unmounted", arrMessages); // 存資料庫
     });
+
+    watch(
+      () => arrMessages.arr,
+      async () => {
+        console.log("b");
+        await nextTick();
+        goBack();
+      }
+    );
+
     const init = async () => {
       // 加入聊天室
       socket.emit("joinRoom", { username: uid.value, room: roomId.value });
 
       //  發送訊息
-      socket.on("chatMessage", async function (id, cusuid, name, msg, time) {
+      socket.on("chatMessage", async function (id, cusId, name, msg, time) {
         // 最新的訊息推到畫面裡
         // console.log(roomId.value);
-        const date = moment().format("MMM Do YY");
         if (arrMessages.arr.length > 0) {
           if (
-            arrMessages.arr[arrMessages.arr.length - 1].date === date ||
+            arrMessages.arr[arrMessages.arr.length - 1].date === todayDate.value ||
             arrMessages.arr[arrMessages.arr.length - 1].date === "today"
           ) {
             arrMessages.arr[arrMessages.arr.length - 1].data.push({
               uid: id,
               name: name,
-              content: msg,
-              time: time,
+              msgContent: msg,
+              msgTime: time,
             });
           } else {
             arrMessages.arr[arrMessages.arr.length] = {
@@ -126,21 +144,21 @@ export default {
                 {
                   uid: id,
                   name: name,
-                  content: msg,
-                  time: time,
+                  msgContent: msg,
+                  msgTime: time,
                 },
               ],
             };
           }
         } else {
           arrMessages.arr[0] = {
-            date: date,
+            date: todayDate.value,
             data: [
               {
                 uid: id,
                 name: name,
-                content: msg,
-                time: time,
+                msgContent: msg,
+                msgTime: time,
               },
             ],
           };
@@ -148,26 +166,24 @@ export default {
         await nextTick();
         goBack();
       });
-      await nextTick();
-      goBack();
     };
 
     // 發送訊息
     const sandMsg = () => {
       const sendTime = moment().format("LT"); // 發送時間
-      if (messages.value) {
+      if (messages.value.replace(/\s+/g || /\r\n|\n/g, "")) {
         socket.emit(
           "chatMessage",
           uid.value,
           cusId.value,
           uid.value,
-          messages.value,
+          messages.value.replace(/\r\n|\n/g, "<br />"),
           sendTime
         );
         socket.emit("checkedNewMsg", uid.value);
-        messages.value = "";
-        moreHeightDom.value.rows = 1;
       }
+      messages.value = "";
+      moreHeightDom.value.rows = 1;
     };
     // 滑到最新的訊息
     const goBack = () => {
@@ -196,30 +212,30 @@ export default {
     };
     // 滾輪到最上面時，要去撈更舊的對話紀錄 (模擬)
     const olderMsg = () => {
-      const newMsgData = {
-        date: "2022-02-28",
-        data: [
-          {
-            uid: 2,
-            name: "Amy",
-            content: "DB go test1",
-            time: "7:31 AM",
-          },
-          {
-            uid: 1,
-            name: "Sara",
-            content: "DB go test2",
-            time: "7:33 AM",
-          },
-          {
-            uid: 2,
-            name: "Amy",
-            content: "DB go test3",
-            time: "8:00 AM",
-          },
-        ],
-      };
-      arrMessages.arr.unshift(newMsgData); // 塞到陣列的最前面
+      // const newMsgData = {
+      //   date: "2022-02-28",
+      //   data: [
+      //     {
+      //       uid: 2,
+      //       name: "Amy",
+      //       content: "DB go test1",
+      //       time: "7:31 AM",
+      //     },
+      //     {
+      //       uid: 1,
+      //       name: "Sara",
+      //       content: "DB go test2",
+      //       time: "7:33 AM",
+      //     },
+      //     {
+      //       uid: 2,
+      //       name: "Amy",
+      //       content: "DB go test3",
+      //       time: "8:00 AM",
+      //     },
+      //   ],
+      // };
+      // arrMessages.arr.unshift(newMsgData); // 塞到陣列的最前面
     };
 
     // 發送訊息的框框變大
@@ -250,6 +266,7 @@ export default {
       moreHeightDom,
       checkmoreHeight,
       isPermission,
+      todayDate,
     };
   },
 };

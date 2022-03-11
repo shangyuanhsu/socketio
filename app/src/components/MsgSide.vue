@@ -4,20 +4,20 @@
     <MsgSet @whichProcess="whichProcess" />
     <div class="allMsgBox">
       <MsgBox
-        v-for="(item, index) in arrMyFriendBox.arr"
+        v-for="(item, index) in arrMyFriendBox"
         :key="index"
         :name="item.name"
         :category="item.category"
         :lastMsg="item.msg"
-        v-show="process === item.status && (search === item.category || search === '0')"
-        @click="showRoom(item.roomId, item.name)"
+        v-show="process === item.status && (search === item.category || search === 0)"
+        @click="showRoom(item.roomId, item.name, item.cusId)"
       />
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { useStore } from "vuex";
 import MsgSearch from "@/components/MsgSearch.vue";
 import MsgSet from "@/components/MsgSet.vue";
@@ -36,23 +36,32 @@ export default {
     const isPermission = ref(false);
     const process = ref(0);
     const search = ref(0);
-    const arrMyFriendBox = reactive({ arr: [] });
     //開始
     onMounted(() => {
       isPermission.value = store.state.permission === 1;
       store.dispatch("selectUserMsgData");
-      arrMyFriendBox.arr = store.state.allRoomBox.map((item) => item);
     });
-    const showRoom = (roomId, name) => {
-      store.dispatch("insertshowRoomId", { roomId, name });
+
+    // 渲染側邊聊天室
+    const arrMyFriendBox = computed(() => {
+      return store.getters.getAllRoomBox;
+    });
+
+    // 預選最上面的開啟
+    const showRoom = (roomId, name, cusId) => {
+      console.log(roomId);
+      store.dispatch("insertshowRoomId", { roomId, name, cusId });
       context.emit("updataChatData", roomId);
     };
+
+    // 看哪一種聊天來源
     const whichSearch = (id) => {
-      search.value = String(id);
-      console.log(search.value);
+      search.value = id;
     };
+
+    // 側邊進度到哪
     const whichProcess = (id) => {
-      process.value = String(id);
+      process.value = id;
     };
 
     return {
