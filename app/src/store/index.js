@@ -10,7 +10,7 @@ export default createStore({
     showCusId: "",//對方id
     allRoomBox: [],//使用者擁有的聊天室
     chatData: [],//當前聊天的內容
-    ham: false
+    ham: false,//漢堡選單開關
   },
   mutations: {// 負責改變 state 裏的資料
     changeUserId(state, data) {
@@ -81,7 +81,7 @@ export default createStore({
         return response.json();
       }).then((data) => {
         if (data.status === "success") {
-          // console.log(data)
+          console.log(data)
           commit('insertRoomBox', data.result);
           dispatch("insertshowRoomId", data.result[0]);
           dispatch("selectRoomId", data.result[0].roomId);

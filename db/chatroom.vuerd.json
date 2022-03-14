@@ -1,0 +1,886 @@
+{
+  "canvas": {
+    "version": "2.2.11",
+    "width": 2000,
+    "height": 2000,
+    "scrollTop": -384.1666514012553,
+    "scrollLeft": -171.66665984524678,
+    "zoomLevel": 0.8,
+    "show": {
+      "tableComment": true,
+      "columnComment": true,
+      "columnDataType": true,
+      "columnDefault": true,
+      "columnAutoIncrement": false,
+      "columnPrimaryKey": true,
+      "columnUnique": false,
+      "columnNotNull": true,
+      "relationship": true
+    },
+    "database": "MySQL",
+    "databaseName": "chatroom",
+    "canvasType": "ERD",
+    "language": "GraphQL",
+    "tableCase": "pascalCase",
+    "columnCase": "camelCase",
+    "highlightTheme": "VS2015",
+    "bracketType": "none",
+    "setting": {
+      "relationshipDataTypeSync": true,
+      "relationshipOptimization": true,
+      "columnOrder": [
+        "columnName",
+        "columnDataType",
+        "columnNotNull",
+        "columnUnique",
+        "columnAutoIncrement",
+        "columnDefault",
+        "columnComment"
+      ]
+    },
+    "pluginSerializationMap": {}
+  },
+  "table": {
+    "tables": [
+      {
+        "name": "member",
+        "comment": "會員",
+        "columns": [
+          {
+            "name": "uid",
+            "comment": "編號",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "f4e97834-eaa4-4049-93f8-0df66bf2a196"
+          },
+          {
+            "name": "name",
+            "comment": "名字",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 63.98486328125,
+              "widthDefault": 60
+            },
+            "id": "692dfd7a-7904-4133-879d-8f88ec27d3d9"
+          },
+          {
+            "name": "status",
+            "comment": "0:啟用 1:停用",
+            "dataType": "INT",
+            "default": "0",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 78.3115234375,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "b317663e-2b1b-47f9-926c-53eb2b169a14"
+          },
+          {
+            "name": "permission",
+            "comment": "0:權限一般 1:工作人員",
+            "dataType": "INT",
+            "default": "0",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 69.1328125,
+              "widthComment": 120,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "fdd447d0-cda5-44e8-b89f-fb2f801ed55a"
+          },
+          {
+            "name": "img",
+            "comment": "頭像",
+            "dataType": "VARCHAR",
+            "default": "./img/user.png",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 63.98486328125,
+              "widthDefault": 92.85400390625
+            },
+            "id": "b422ab13-d296-4e80-9875-86a5a1d7da67"
+          },
+          {
+            "name": "createtime",
+            "comment": "創建時間",
+            "dataType": "DATETIME",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 67.2412109375,
+              "widthComment": 60,
+              "widthDataType": 65.8193359375,
+              "widthDefault": 60
+            },
+            "id": "b31fd152-3401-4a25-82c1-35c943c2de15"
+          },
+          {
+            "name": "updatetime",
+            "comment": "更新時間",
+            "dataType": "DATETIME",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": false
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 72.9794921875,
+              "widthComment": 60,
+              "widthDataType": 65.8193359375,
+              "widthDefault": 60
+            },
+            "id": "99aa4834-ba46-49a5-859d-f6e3b6bdac5b"
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 547.3843,
+          "top": 10.2545,
+          "zIndex": 196,
+          "widthName": 60,
+          "widthComment": 60
+        },
+        "visible": true,
+        "id": "8de79391-a9c0-44f4-9d2b-b172fa1cdec3"
+      },
+      {
+        "name": "room",
+        "comment": "聊天室",
+        "columns": [
+          {
+            "name": "roomId",
+            "comment": "聊天室編號",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 67,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "fc51e883-8ed8-41c4-88b5-5cd984c48d96"
+          },
+          {
+            "name": "process",
+            "comment": "進行階段0:等待中1:進行中2:完成",
+            "dataType": "INT",
+            "default": "0",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 120,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "0db9b8e4-d7b3-4b37-92e1-443220f0e4e6"
+          },
+          {
+            "name": "category",
+            "comment": "聊天室種類",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 67,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "524ce1fb-8fc6-497e-b9d9-f1e4882c3d70"
+          },
+          {
+            "name": "createtime",
+            "comment": "創建時間",
+            "dataType": "DATETIME",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 67.2412109375,
+              "widthComment": 60,
+              "widthDataType": 65.8193359375,
+              "widthDefault": 60
+            },
+            "id": "6671b136-a67f-4888-a758-a433ead8829f"
+          },
+          {
+            "name": "updatetime",
+            "comment": "更新時間",
+            "dataType": "DATETIME",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 72.9794921875,
+              "widthComment": 60,
+              "widthDataType": 65.8193359375,
+              "widthDefault": 60
+            },
+            "id": "2c159d67-a448-4e38-af29-b469e2964c2f"
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 66.4578,
+          "top": 535.6946,
+          "zIndex": 157,
+          "widthName": 60,
+          "widthComment": 60
+        },
+        "visible": true,
+        "id": "c7c1545b-d46a-4a52-a6ab-29caf710c265"
+      },
+      {
+        "name": "categoryroom",
+        "comment": "聊天室種類",
+        "columns": [
+          {
+            "name": "id",
+            "comment": "編號",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "80624fea-9900-451a-9582-97e881ac5ba0"
+          },
+          {
+            "name": "title",
+            "comment": "1:fb2:line3:other",
+            "dataType": "VARCHAR",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 101.1123046875,
+              "widthDataType": 63.98486328125,
+              "widthDefault": 60
+            },
+            "id": "7efa3515-f1f4-428b-a2fc-dc5e5f03afa0"
+          },
+          {
+            "name": "status",
+            "comment": "0:啟用 1:停用",
+            "dataType": "INT",
+            "default": "0",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 78.3115234375,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "72fd1c9d-0f7c-474b-afe9-5e7483e38a58"
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 84.4702,
+          "top": 89.4225,
+          "zIndex": 133,
+          "widthName": 88.9248046875,
+          "widthComment": 67
+        },
+        "visible": true,
+        "id": "90714ac1-b7c7-4912-b5bb-a837da5b3d5e"
+      },
+      {
+        "name": "userroom",
+        "comment": "使用者聊天室",
+        "columns": [
+          {
+            "name": "id",
+            "comment": "流水號",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "c6bb178d-3f66-4f44-ae63-bd2b319b6411"
+          },
+          {
+            "name": "uid",
+            "comment": "編號",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "9fd783f4-12d3-405d-aa20-4073121013fe"
+          },
+          {
+            "name": "roomId",
+            "comment": "聊天室編號",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 67,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "868b0217-533a-4efb-aa98-481688a81002"
+          },
+          {
+            "name": "createtime",
+            "comment": "創建時間",
+            "dataType": "DATETIME",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 67.2412109375,
+              "widthComment": 60,
+              "widthDataType": 65.8193359375,
+              "widthDefault": 60
+            },
+            "id": "977405ec-602d-4ca2-8259-91b946faf487"
+          },
+          {
+            "name": "updatetime",
+            "comment": "更新時間",
+            "dataType": "DATETIME",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 72.9794921875,
+              "widthComment": 60,
+              "widthDataType": 65.8193359375,
+              "widthDefault": 60
+            },
+            "id": "96c8d3ad-976c-43bb-8932-ae2be77f9b98"
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 591.8764,
+          "top": 354.3064,
+          "zIndex": 172,
+          "widthName": 61.28076171875,
+          "widthComment": 80
+        },
+        "visible": true,
+        "id": "390b5b4a-fb8f-41e3-8380-d9e5f2895317"
+      },
+      {
+        "name": "msglog",
+        "comment": "聊天內容",
+        "columns": [
+          {
+            "name": "msgId",
+            "comment": "流水號",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": true,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": true,
+              "fk": false,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "a855312c-dfe3-4c74-8900-8a86e49684d7"
+          },
+          {
+            "name": "uid",
+            "comment": "使用者",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "04d21779-94e4-4ebe-89ff-57c819731252"
+          },
+          {
+            "name": "roomId",
+            "comment": "聊天室編號",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": true,
+              "pfk": false,
+              "widthName": 60,
+              "widthComment": 67,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "7ee7f0f3-e942-4f7b-b1f6-d1dd64526a11"
+          },
+          {
+            "name": "msgContent",
+            "comment": "內容",
+            "dataType": "TEXT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 77.67041015625,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "d7918ae5-0ccf-4e08-ac17-56ca0372451d"
+          },
+          {
+            "name": "contentCategory",
+            "comment": "內容類型",
+            "dataType": "INT",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 105.10498046875,
+              "widthComment": 60,
+              "widthDataType": 60,
+              "widthDefault": 60
+            },
+            "id": "0d7eeb7c-8948-4a3b-9efd-6b4065a3b276"
+          },
+          {
+            "name": "createtime",
+            "comment": "創建時間",
+            "dataType": "DATETIME",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 67.2412109375,
+              "widthComment": 60,
+              "widthDataType": 65.8193359375,
+              "widthDefault": 60
+            },
+            "id": "19b11dde-860b-48d2-9c77-e85c1b36f4be"
+          },
+          {
+            "name": "updatetime",
+            "comment": "更新時間",
+            "dataType": "DATETIME",
+            "default": "",
+            "option": {
+              "autoIncrement": false,
+              "primaryKey": false,
+              "unique": false,
+              "notNull": true
+            },
+            "ui": {
+              "active": false,
+              "pk": false,
+              "fk": false,
+              "pfk": false,
+              "widthName": 72.9794921875,
+              "widthComment": 60,
+              "widthDataType": 65.8193359375,
+              "widthDefault": 60
+            },
+            "id": "1fc45df3-35f9-428d-9ffe-70e050d340c9"
+          }
+        ],
+        "ui": {
+          "active": false,
+          "left": 994.9293,
+          "top": 559.5393,
+          "zIndex": 204,
+          "widthName": 60,
+          "widthComment": 60
+        },
+        "visible": true,
+        "id": "753e11b0-dfbc-4929-ae44-7c26481b996b"
+      }
+    ],
+    "indexes": []
+  },
+  "memo": {
+    "memos": []
+  },
+  "relationship": {
+    "relationships": [
+      {
+        "identification": false,
+        "relationshipType": "OneN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "8de79391-a9c0-44f4-9d2b-b172fa1cdec3",
+          "columnIds": [
+            "f4e97834-eaa4-4049-93f8-0df66bf2a196"
+          ],
+          "x": 776.710716015625,
+          "y": 222.7545,
+          "direction": "bottom"
+        },
+        "end": {
+          "tableId": "390b5b4a-fb8f-41e3-8380-d9e5f2895317",
+          "columnIds": [
+            "9fd783f4-12d3-405d-aa20-4073121013fe"
+          ],
+          "x": 778.2758140625,
+          "y": 354.3064,
+          "direction": "top"
+        },
+        "constraintName": "fk_member_to_userroom",
+        "visible": true,
+        "id": "f4688f67-a403-4baa-9bff-3a1f951ed944"
+      },
+      {
+        "identification": false,
+        "relationshipType": "OneN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "c7c1545b-d46a-4a52-a6ab-29caf710c265",
+          "columnIds": [
+            "fc51e883-8ed8-41c4-88b5-5cd984c48d96"
+          ],
+          "x": 492.256628125,
+          "y": 578.5696,
+          "direction": "right"
+        },
+        "end": {
+          "tableId": "390b5b4a-fb8f-41e3-8380-d9e5f2895317",
+          "columnIds": [
+            "868b0217-533a-4efb-aa98-481688a81002"
+          ],
+          "x": 591.8764,
+          "y": 440.0564,
+          "direction": "left"
+        },
+        "constraintName": "fk_room_to_userroom",
+        "visible": true,
+        "id": "b701b5b9-ac03-47ac-b270-30a42e955240"
+      },
+      {
+        "identification": false,
+        "relationshipType": "OneN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "8de79391-a9c0-44f4-9d2b-b172fa1cdec3",
+          "columnIds": [
+            "f4e97834-eaa4-4049-93f8-0df66bf2a196"
+          ],
+          "x": 1006.03713203125,
+          "y": 116.50450000000001,
+          "direction": "right"
+        },
+        "end": {
+          "tableId": "753e11b0-dfbc-4929-ae44-7c26481b996b",
+          "columnIds": [
+            "04d21779-94e4-4ebe-89ff-57c819731252"
+          ],
+          "x": 1197.391458203125,
+          "y": 559.5393,
+          "direction": "top"
+        },
+        "constraintName": "fk_member_to_msglog",
+        "visible": true,
+        "id": "64de970f-3098-4e5b-b105-d20a6ae2ef28"
+      },
+      {
+        "identification": false,
+        "relationshipType": "OneN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "c7c1545b-d46a-4a52-a6ab-29caf710c265",
+          "columnIds": [
+            "fc51e883-8ed8-41c4-88b5-5cd984c48d96"
+          ],
+          "x": 492.256628125,
+          "y": 664.3196,
+          "direction": "right"
+        },
+        "end": {
+          "tableId": "753e11b0-dfbc-4929-ae44-7c26481b996b",
+          "columnIds": [
+            "7ee7f0f3-e942-4f7b-b1f6-d1dd64526a11"
+          ],
+          "x": 994.9293,
+          "y": 665.7893,
+          "direction": "left"
+        },
+        "constraintName": "fk_room_to_msglog",
+        "visible": true,
+        "id": "1ff3e528-7256-48cb-8074-83e6d79a09a8"
+      },
+      {
+        "identification": false,
+        "relationshipType": "OneN",
+        "startRelationshipType": "Dash",
+        "start": {
+          "tableId": "90714ac1-b7c7-4912-b5bb-a837da5b3d5e",
+          "columnIds": [
+            "80624fea-9900-451a-9582-97e881ac5ba0"
+          ],
+          "x": 280.518783984375,
+          "y": 219.9225,
+          "direction": "bottom"
+        },
+        "end": {
+          "tableId": "c7c1545b-d46a-4a52-a6ab-29caf710c265",
+          "columnIds": [
+            "524ce1fb-8fc6-497e-b9d9-f1e4882c3d70"
+          ],
+          "x": 279.3572140625,
+          "y": 535.6946,
+          "direction": "top"
+        },
+        "constraintName": "fk_categoryroom_to_room",
+        "visible": true,
+        "id": "26c1a892-1363-49ad-9dce-34227159be9d"
+      }
+    ]
+  }
+}

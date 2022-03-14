@@ -9,7 +9,7 @@
       <div class="userInfo">
         <b>Hello, {{ userName }}</b>
       </div>
-      <div class="userImg"><img src="" alt="" /></div>
+      <div class="userImg"><img src="@/assets/img/user.png" alt="" /></div>
     </div>
   </div>
 </template>
@@ -26,7 +26,10 @@ export default {
     onMounted(() => {
       userName.value = store.state.userName;
     });
-    const showMsgBox = () => {};
+    const showMsgBox = () => {
+      console.log(store.state.ham);
+      store.dispatch("goChangeHam", !store.state.ham);
+    };
     return {
       userName,
       showMsgBox,
@@ -72,6 +75,9 @@ export default {
   height: 45px;
   border-radius: 70%;
   overflow: hidden;
+}
+.userImg > img {
+  width: 100%;
 }
 @media (max-width: 955px) {
   .hamburgerMenu span {

@@ -1,7 +1,7 @@
 <template>
   <div class="msgBox">
     <div class="userImg">
-      <img src="" alt="" />
+      <img :src="imgUrl" alt="" />
     </div>
     <div class="boxData">
       <div>
@@ -34,11 +34,13 @@ export default {
     name: String,
     category: Number,
     lastMsg: String,
+    img: String,
   },
   setup(props) {
     const cusName = ref("");
     const whichCategory = ref("");
     const cusMsg = ref("");
+    const imgUrl = ref("");
     const arrSearch = {
       arr: [
         { id: 0, title: "All" },
@@ -51,6 +53,7 @@ export default {
     onMounted(() => {
       cusName.value = props.name;
       cusMsg.value = props.lastMsg;
+      imgUrl.value = props.img;
       whichCategory.value = arrSearch.arr.filter(
         (item) => item.id === props.category
       )[0].title;
@@ -61,6 +64,7 @@ export default {
       cusName,
       whichCategory,
       cusMsg,
+      imgUrl,
     };
   },
 };
@@ -84,6 +88,9 @@ export default {
   background: gray;
   border-radius: 70%;
   overflow: hidden;
+}
+.userImg > img {
+  width: 100%;
 }
 .boxData {
   width: 70%;

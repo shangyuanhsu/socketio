@@ -60,7 +60,8 @@ app.post('/getMsgLog', (req, res) => {
                 msg: "",
                 status: 0,
                 msgId: 0,
-                msgTime: ""
+                img: "",
+                createtime: ""
             };
             const sql2 = `SELECT *
                           FROM chatroom.msglog
@@ -72,7 +73,7 @@ app.post('/getMsgLog', (req, res) => {
                 if (result2.length > 0) {
                     tem.msg = result2[0].msgContent;
                     tem.msgId = result2[0].msgId;
-                    tem.msgTime = moment(result2[0].msgTime).fromNow().split("days").length > 1 || moment(result2[0].msgTime).fromNow().split("year").length > 1 ? moment(result2[0].msgTime).format("MMM Do YY") : moment(result2[0].msgTime).fromNow();
+                    tem.createtime = moment(result2[0].createtime).fromNow().split("days").length > 1 || moment(result2[0].createtime).fromNow().split("year").length > 1 ? moment(result2[0].createtime).format("MMM Do YY") : moment(result2[0].createtime).fromNow();
                 }
 
             })
@@ -85,6 +86,7 @@ app.post('/getMsgLog', (req, res) => {
             con.query(sql3, [result.roomId, data.uid], function (err, result2) {
                 if (result2.length > 0) {
                     tem.cusId = result2[0].uid;
+                    tem.img = result2[0].img;
                     tem.name = result2[0].name;
                     tem.status = result2[0].process;
                     tem.category = result2[0].category;
@@ -142,7 +144,7 @@ app.post('/getRoomIdData', (req, res) => {
                             date: "",
                             data: [],
                         };
-                        const time = moment(array[index].msgTime).format("MMM Do YY");
+                        const time = moment(array[index].createtime).format("MMM Do YY");
                         if (arr.indexOf(time) === -1) {
                             arr.push(time)
                             obj.date = time;
@@ -151,7 +153,7 @@ app.post('/getRoomIdData', (req, res) => {
                         for (let k = 0; k < data.length; k++) {
                             if (data[k].date === time) {
                                 data[k].data.push(array[index])
-                                data[k].data[data[k].data.length-1].msgTime =  moment(data[k].data[data[k].data.length-1].msgTime).format("LT")
+                                data[k].data[data[k].data.length - 1].createtime = moment(data[k].data[data[k].data.length - 1].createtime).format("LT")
                             }
                         }
                     }

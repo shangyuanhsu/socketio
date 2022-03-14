@@ -12,7 +12,8 @@
 </template>
 
 <script>
-import { onMounted, reactive } from "vue";
+import { useStore } from "vuex";
+import { onMounted, reactive, ref } from "vue";
 
 export default {
   name: "MsgSet",
@@ -20,6 +21,8 @@ export default {
   emits: ["whichProcess"],
 
   setup(props, context) {
+    const store = useStore();
+    const isShowLeft = ref(false);
     const arrProcess = reactive({
       arr: [
         { id: 0, title: "Processed", checked: true },
@@ -29,7 +32,9 @@ export default {
     });
 
     //開始
-    onMounted(() => {});
+    onMounted(() => {
+      isShowLeft.value = store.state.ham;
+    });
 
     const changeChecked = (index) => {
       arrProcess.arr = arrProcess.arr.map((item, ind) => {
@@ -44,6 +49,7 @@ export default {
     return {
       arrProcess,
       changeChecked,
+      isShowLeft,
     };
   },
 };
@@ -58,6 +64,7 @@ export default {
   overflow: hidden;
   margin: 20px auto;
 }
+
 .msgSet div {
   text-align: center;
   padding: 10px 8px;

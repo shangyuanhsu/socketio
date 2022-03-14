@@ -1,5 +1,5 @@
 <template>
-  <div class="msgSide">
+  <div class="msgSide showLeft">
     <MsgSearch @whichSearch="whichSearch" v-if="isPermission" />
     <MsgSet @whichProcess="whichProcess" />
     <div class="allMsgBox">
@@ -9,6 +9,7 @@
         :name="item.name"
         :category="item.category"
         :lastMsg="item.msg"
+        :img="require('@/assets/' + item.img)"
         v-show="process === item.status && (search === item.category || search === 0)"
         @click="showRoom(item.roomId, item.name, item.cusId)"
       />
@@ -112,6 +113,11 @@ export default {
   .msgSide {
     position: absolute;
     left: -400px;
+  }
+  .showLeft {
+    background: #fff;
+    left: 0;
+    z-index: 5;
   }
 }
 </style>

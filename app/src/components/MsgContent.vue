@@ -23,12 +23,12 @@
           >
             <p class="userName">{{ msg.uid === uid ? "" : nameCus }}</p>
             <div v-if="msg.uid === uid">
-              <p class="time">{{ msg.msgTime }}</p>
+              <p class="time">{{ msg.createtime }}</p>
               <p class="content" v-html="msg.msgContent"></p>
             </div>
             <div v-else>
               <p class="content" v-html="msg.msgContent"></p>
-              <p class="time">{{ msg.msgTime }}</p>
+              <p class="time">{{ msg.createtime }}</p>
             </div>
           </div>
         </li>
@@ -135,7 +135,7 @@ export default {
               uid: id,
               name: name,
               msgContent: msg,
-              msgTime: time,
+              createtime: time,
             });
           } else {
             arrMessages.arr[arrMessages.arr.length] = {
@@ -145,7 +145,7 @@ export default {
                   uid: id,
                   name: name,
                   msgContent: msg,
-                  msgTime: time,
+                  createtime: time,
                 },
               ],
             };
@@ -158,7 +158,7 @@ export default {
                 uid: id,
                 name: name,
                 msgContent: msg,
-                msgTime: time,
+                createtime: time,
               },
             ],
           };
