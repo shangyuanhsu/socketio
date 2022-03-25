@@ -1,9 +1,9 @@
 <template>
   <div class="msgNavbar">
     <div class="hamburgerMenu" @click="showMsgBox">
-      <span></span>
-      <span></span>
-      <span></span>
+      <span :class="{ pHam: showHam }"></span>
+      <span :class="{ pHam: showHam }"></span>
+      <span :class="{ pHam: showHam }"></span>
     </div>
     <div class="userBox">
       <div class="userInfo">
@@ -16,7 +16,7 @@
 
 <script>
 import { useStore } from "vuex";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 
 export default {
   name: "MsgNavbar",
@@ -25,14 +25,25 @@ export default {
     const userName = ref("user");
     onMounted(() => {
       userName.value = store.state.userName;
+      window.addEventListener("resize", () => {
+        if (window.innerWidth > 955) {
+          store.dispatch("goChangeHam", false);
+        }
+      });
     });
     const showMsgBox = () => {
       console.log(store.state.ham);
       store.dispatch("goChangeHam", !store.state.ham);
     };
+
+    const showHam = computed(() => {
+      return store.getters.getHam;
+    });
+
     return {
       userName,
       showMsgBox,
+      showHam,
     };
   },
 };
@@ -82,6 +93,23 @@ export default {
 @media (max-width: 955px) {
   .hamburgerMenu span {
     display: block;
+  }
+  .hamburgerMenu span:not(:nth-child(2)) {
+    transition: all 0.5s;
+  }
+  .pHam:first-child {
+    transform: rotate(45deg);
+    transform-origin: 0 0;
+    position: relative;
+    top: 1px;
+    left: 4px;
+  }
+  .pHam:nth-child(2) {
+    visibility: hidden;
+  }
+  .pHam:last-child {
+    transform: rotate(-45deg);
+    transform-origin: 0 0;
   }
 }
 </style>

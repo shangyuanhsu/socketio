@@ -55,6 +55,7 @@
     <div class="goBack" v-show="isShowBack" @click="goBack">
       <img src="../assets/img/arrow_downward_black_24dp.svg" alt="" />
     </div>
+    <div class="bg" v-if="showHam"></div>
   </div>
 </template>
 
@@ -103,6 +104,10 @@ export default {
 
     const a = computed(() => {
       return store.getters.getChatData;
+    });
+
+    const showHam = computed(() => {
+      return store.getters.getHam;
     });
 
     onUnmounted(() => {
@@ -267,6 +272,7 @@ export default {
       checkmoreHeight,
       isPermission,
       todayDate,
+      showHam,
     };
   },
 };
@@ -463,5 +469,20 @@ li > .mine > div {
 }
 .upImg {
   cursor: pointer;
+}
+
+.bg {
+  position: absolute;
+  background-color: rgba(59, 59, 59, 0.329);
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: none;
+}
+@media (max-width: 955px) {
+  .bg {
+    display: block;
+  }
 }
 </style>

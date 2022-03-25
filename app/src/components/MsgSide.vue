@@ -1,5 +1,5 @@
 <template>
-  <div class="msgSide showLeft">
+  <div :class="['msgSide', { showLeft: showHam }]">
     <MsgSearch @whichSearch="whichSearch" v-if="isPermission" />
     <MsgSet @whichProcess="whichProcess" />
     <div class="allMsgBox">
@@ -65,6 +65,10 @@ export default {
       process.value = id;
     };
 
+    const showHam = computed(() => {
+      return store.getters.getHam;
+    });
+
     return {
       arrMyFriendBox,
       showRoom,
@@ -73,6 +77,7 @@ export default {
       whichSearch,
       search,
       isPermission,
+      showHam,
     };
   },
 };
@@ -80,6 +85,7 @@ export default {
 
 <style scoped>
 .msgSide {
+  background: #fff;
   height: calc(100vh - 65px);
   padding: 8px 20px;
   border-right: 1px solid rgb(228, 228, 228);
@@ -113,9 +119,10 @@ export default {
   .msgSide {
     position: absolute;
     left: -400px;
+    z-index: 5;
+    transition: left 0.5s;
   }
   .showLeft {
-    background: #fff;
     left: 0;
     z-index: 5;
   }

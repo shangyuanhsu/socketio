@@ -194,8 +194,11 @@ export default createStore({
     getAllRoomBox: (state) => {
       return state.allRoomBox
     },
-    getChatData:  (state) => {
+    getChatData: (state) => {
       return state.chatData
+    },
+    getHam: (state) => {
+      return state.ham
     }
   },
   modules: {

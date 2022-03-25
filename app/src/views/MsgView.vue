@@ -45,6 +45,7 @@ export default {
         // console.log(data);
       });
     });
+
     const updataChatData = (roomId) => {
       store.dispatch("selectRoomId", roomId);
       componentKey.value = roomId;
@@ -62,6 +63,7 @@ main {
   display: grid;
   grid-template-columns: 380px 1fr;
 }
+
 @media (max-width: 955px) {
   main {
     grid-template-columns: 1fr;
