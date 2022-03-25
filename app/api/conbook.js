@@ -1,6 +1,7 @@
 //mysql 連線
-import { createConnection } from 'mysql';
-var con = createConnection({
+const mysql = require('mysql');
+
+var con = mysql.createConnection({
     host: "localhost",
     user: "root",
     // port: 8889,
@@ -11,4 +12,4 @@ con.connect(function (err) {
     if (err) throw err;
 });
 
-export default con;
+module.exports = con;

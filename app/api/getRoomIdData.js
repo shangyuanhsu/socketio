@@ -1,8 +1,8 @@
 // 抓預選的聊天室內容 => 之後要切分成不同數量與筆數
-import moment from "moment";
-import { query } from "./conbook";
+const moment = require('moment');
+const query = require('./conbook');
 
-export default function (req, res) {
+module.exports =function (req, res) {
     const data = req.body;
     const roomId = data.roomId;
     if (roomId) {

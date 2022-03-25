@@ -1,12 +1,13 @@
-import express, { json } from 'express';
-import cors from 'cors';
+const express = require('express');
+const cors = require('cors');
 var app = express();
+const getMember = require('./getMember.js');
+const getMsgLog = require('./getMsgLog.js');
+const getRoomIdData = require('./getRoomIdData.js');
 
-import getMember from "./getMember.js";
-import getMsgLog from "./getMsgLog.js";
-import getRoomIdData from "./getRoomIdData.js";
+
 app.use(cors()) // 跨域問題
-app.use(json())// json格式
+app.use(express.json())// json格式
 
 // 確認會員身分
 app.post('/getMember',getMember);

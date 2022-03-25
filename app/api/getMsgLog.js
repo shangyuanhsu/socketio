@@ -1,8 +1,9 @@
 // 抓使用者擁有的聊天室
-import moment from "moment";
-import { query } from "./conbook";
+const moment = require('moment');
+const query = require('./conbook');
 
-export default function (req, res) {
+
+module.exports = function (req, res) {
 
     const data = req.body;
     const uid = data.uid;

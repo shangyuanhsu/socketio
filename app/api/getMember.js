@@ -1,8 +1,8 @@
 
 // 確認會員身分
-import { query } from "./conbook";
+const query = require('./conbook');
 
-export default function (req, res) {
+module.exports = function (req, res) {
 
     const data = req.body;
     const uid = data.uid;
