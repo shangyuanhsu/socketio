@@ -1,15 +1,15 @@
 // 抓預選的聊天室內容 => 之後要切分成不同數量與筆數
 const moment = require('moment');
-const query = require('./conbook');
+const con = require('./conbook');
 
-module.exports =function (req, res) {
+module.exports = function (req, res) {
     const data = req.body;
     const roomId = data.roomId;
     if (roomId) {
         const sql = `SELECT * 
                      FROM chatroom.msglog 
                      WHERE msglog.roomId = ?;`;
-        query(sql, [roomId], async function (err, result) {
+        con.query(sql, [roomId], async function (err, result) {
             const data = { status: "success", result: [] };
             const asyncForEach = (array) => {
                 return new Promise((resolve) => {

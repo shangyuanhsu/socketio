@@ -117,6 +117,7 @@ export default {
 
 @media (max-width: 955px) {
   .msgSide {
+    width: 380px;
     position: absolute;
     left: -400px;
     z-index: 5;

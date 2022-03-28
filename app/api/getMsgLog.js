@@ -1,6 +1,6 @@
 // 抓使用者擁有的聊天室
 const moment = require('moment');
-const query = require('./conbook');
+const con = require('./conbook');
 
 
 module.exports = function (req, res) {
@@ -31,7 +31,7 @@ module.exports = function (req, res) {
                           WHERE roomId = ?
                           order by msgId desc
                           limit 1`;
-            query(sql2, [result.roomId], function (err, result2) {
+            con.query(sql2, [result.roomId], function (err, result2) {
                 tem.roomId = result.roomId;
                 if (result2.length > 0) {
                     tem.msg = result2[0].msgContent;
@@ -46,7 +46,7 @@ module.exports = function (req, res) {
                           JOIN chatroom.room on room.roomId = userroom.roomId
                           WHERE userroom.roomId = ?
                           AND userroom.uid != ?;`;
-            query(sql3, [result.roomId, data.uid], function (err, result2) {
+            con.query(sql3, [result.roomId, data.uid], function (err, result2) {
                 if (result2.length > 0) {
                     tem.cusId = result2[0].uid;
                     tem.img = result2[0].img;
@@ -67,7 +67,7 @@ module.exports = function (req, res) {
                  SELECT roomId 
                  FROM chatroom.userroom 
                  WHERE uid = ?)`;
-    query(sql, [uid], async (err, result) => {
+    con.query(sql, [uid], async (err, result) => {
         const asyncForEach = async (array, callback) => {
             for (let index = 0; index < array.length; index++) {
                 let val = await callback(array[index]);

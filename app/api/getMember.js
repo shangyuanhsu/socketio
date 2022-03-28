@@ -1,6 +1,6 @@
 
 // 確認會員身分
-const query = require('./conbook');
+const con = require('./conbook');
 
 module.exports = function (req, res) {
 
@@ -10,7 +10,7 @@ module.exports = function (req, res) {
                  FROM member 
                  WHERE uid = ? 
                  AND status = 0`;
-    query(sql, [uid], function (err, result) {
+    con.query(sql, [uid], function (err, result) {
         const data = { status: "success", result: result };
         if (result && result.length > 0) {
             data.status = "success";

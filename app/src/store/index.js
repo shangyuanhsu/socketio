@@ -52,7 +52,7 @@ export default createStore({
       }).then((response) => {
         return response.json();
       }).then((data) => {
-        // console.log(data);
+        console.log(data);
         if (data.status === "success") {
           const name = data.result[0].name;
           const permission = data.result[0].permission;
