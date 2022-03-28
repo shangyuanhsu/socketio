@@ -1,6 +1,7 @@
 
 // 確認會員身分
-const con = require('./conbook');
+// const con = require('./conbook');
+const con = require('./mongodbConnect');
 
 module.exports = function (req, res) {
 
