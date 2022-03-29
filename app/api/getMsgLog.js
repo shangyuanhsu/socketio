@@ -1,6 +1,7 @@
 // 抓使用者擁有的聊天室
 const moment = require('moment');
-const con = require('./conbook');
+const { MongoClient, url } = require('./mongodbConnect');
+
 
 
 module.exports = function (req, res) {
@@ -60,29 +61,38 @@ module.exports = function (req, res) {
         })
     }
 
+    MongoClient.connect(url,function(err,db){
+        if (err) throw err;
+        var dbo = db.db("chatroom");
+        dbo.collection("room").find({}).toArray(function(err,res){
+            if (err) throw err;
+            console.log(res);
+            db.close();
+        })
+    })
 
-    const sql = `SELECT * 
-                 FROM chatroom.room
-                 WHERE roomId in (
-                 SELECT roomId 
-                 FROM chatroom.userroom 
-                 WHERE uid = ?)`;
-    con.query(sql, [uid], async (err, result) => {
-        const asyncForEach = async (array, callback) => {
-            for (let index = 0; index < array.length; index++) {
-                let val = await callback(array[index]);
-                dataTem.result[index] = val;
-            }
-        }
-        const asyncSort = () => {
-            return new Promise((resolve) => {
-                dataTem.result.sort((a, b) => b.msgId - a.msgId);
-                resolve();
-            })
-        }
-        await asyncForEach(result, checkedMsg);
-        await asyncSort();
-        res.json(dataTem);
-    });
+    // const sql = `SELECT * 
+    //              FROM chatroom.room
+    //              WHERE roomId in (
+    //              SELECT roomId 
+    //              FROM chatroom.userroom 
+    //              WHERE uid = ?)`;
+    // con.query(sql, [uid], async (err, result) => {
+    //     const asyncForEach = async (array, callback) => {
+    //         for (let index = 0; index < array.length; index++) {
+    //             let val = await callback(array[index]);
+    //             dataTem.result[index] = val;
+    //         }
+    //     }
+    //     const asyncSort = () => {
+    //         return new Promise((resolve) => {
+    //             dataTem.result.sort((a, b) => b.msgId - a.msgId);
+    //             resolve();
+    //         })
+    //     }
+    //     await asyncForEach(result, checkedMsg);
+    //     await asyncSort();
+    //     res.json(dataTem);
+    // });
 }
 

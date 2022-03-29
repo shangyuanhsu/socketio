@@ -1,24 +1,26 @@
 
 // 確認會員身分
-// const con = require('./conbook');
-const con = require('./mongodbConnect');
+const { MongoClient, url } = require('./mongodbConnect');
 
-module.exports = function (req, res) {
+module.exports = (req, res) => {
 
     const data = req.body;
     const uid = data.uid;
-    const sql = `SELECT * 
-                 FROM member 
-                 WHERE uid = ? 
-                 AND status = 0`;
-    con.query(sql, [uid], function (err, result) {
-        const data = { status: "success", result: result };
-        if (result && result.length > 0) {
-            data.status = "success";
-        } else {
-            data.status = "error";
-        }
-        res.json(data);
-    });
+
+    MongoClient.connect(url, (err, db) => {
+        if (err) throw err;
+        var dbo = db.db("chatroom");
+        dbo.collection("member").find({ uid: uid }).toArray((err, result) => {
+            if (err) throw err;
+            const data = { status: "success", result: result };
+            if (result && result.length > 0) {
+                data.status = "success";
+            } else {
+                data.status = "error";
+            }
+            res.json(data);
+            db.close();
+        })
+    })
 }
 
