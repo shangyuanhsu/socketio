@@ -81,7 +81,7 @@ export default createStore({
         return response.json();
       }).then((data) => {
         if (data.status === "success") {
-          console.log(data)
+          console.log("getMsgLog",data)
           commit('insertRoomBox', data.result);
           dispatch("insertshowRoomId", data.result[0]);
           dispatch("selectRoomId", data.result[0].roomId);
@@ -191,6 +191,9 @@ export default createStore({
   getters: {
     // 像 computed 一樣，運算處理 state 資料
     //==================================================
+    getShowRoom: (state) => {
+      return {showRoomId:state.showRoomId,showCusName:state.showCusName}
+    },
     getAllRoomBox: (state) => {
       return state.allRoomBox
     },

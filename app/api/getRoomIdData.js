@@ -5,6 +5,7 @@ const { MongoClient, url } = require('./mongodbConnect');
 module.exports = (req, res) => {
     const data = req.body;
     const roomId = data.roomId;
+    console.log(roomId);
     if (roomId) {
 
         MongoClient.connect(url, (err, db) => {

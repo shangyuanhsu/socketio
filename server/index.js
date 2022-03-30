@@ -49,6 +49,7 @@ io.on('connection', (socket) => {
 
         // 傳訊息要互丟的資訊
         socket.on('chatMessage', (id, cusId, name, msg, time) => {
+            console.log(id, cusId, name, msg, time);
             io.to(user.room).emit('chatMessage', id, cusId, name, msg, time);
             if (msgArr[user.room]) {
                 msgArr[user.room].push({ userId: name, cusuid: cusId, txt: msg, status: false });

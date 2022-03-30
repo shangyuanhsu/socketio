@@ -2,7 +2,7 @@
   <div class="msgContent">
     <!-- status -->
     <div class="cusData">
-      <div class="cusUserName">{{ nameCus }}</div>
+      <div class="cusUserName">{{ getShowRoom.showCusName }}</div>
       <div class="cusSet" v-if="isPermission">
         <div>blacklist</div>
         <div class="checked">processing</div>
@@ -21,7 +21,7 @@
             :key="index"
             :class="[msg.uid === uid ? 'mine' : '']"
           >
-            <p class="userName">{{ msg.uid === uid ? "" : nameCus }}</p>
+            <p class="userName">{{ msg.uid === uid ? "" : getShowRoom.showCusName }}</p>
             <div v-if="msg.uid === uid">
               <p class="time">{{ msg.createtime }}</p>
               <p class="content" v-html="msg.msgContent"></p>
@@ -102,6 +102,9 @@ export default {
       init();
     });
 
+    const getShowRoom = computed(() => {
+      return store.getters.getShowRoom;
+    });
     const a = computed(() => {
       return store.getters.getChatData;
     });
@@ -273,6 +276,7 @@ export default {
       isPermission,
       todayDate,
       showHam,
+      getShowRoom,
     };
   },
 };

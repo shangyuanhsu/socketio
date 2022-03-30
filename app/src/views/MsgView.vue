@@ -10,7 +10,7 @@
 
 <script>
 import { useStore } from "vuex";
-import { onMounted, ref } from "vue";
+import { computed, onMounted } from "vue";
 import router from "@/router";
 import MsgNavbar from "@/components/MsgNavbar.vue";
 import MsgSide from "@/components/MsgSide.vue";
@@ -26,16 +26,16 @@ export default {
   },
   setup() {
     const store = useStore();
-    const componentKey = ref(0);
+    // const componentKey = ref(0);
     const socket = io("http://localhost:3000/"); // 聊天室連線
     //開始
     onMounted(() => {
-      console.log(store.state.userId);
       if (!store.state.userId) {
         socket.on("disconnect");
         alert("ID ERROR !");
         router.push({ name: "login" });
       } else {
+        // console.log("showRoomId", store.state.showRoomId);
         updataChatData(store.state.showRoomId);
       }
 
@@ -46,9 +46,13 @@ export default {
       });
     });
 
+    const componentKey = computed(() => {
+      return store.state.showRoomId;
+    });
+
     const updataChatData = (roomId) => {
       store.dispatch("selectRoomId", roomId);
-      componentKey.value = roomId;
+      // componentKey.value = roomId;
     };
 
     return {
