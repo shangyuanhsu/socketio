@@ -4,6 +4,7 @@ var app = express();
 const getMember = require('./getMember.js');
 const getMsgLog = require('./getMsgLog.js');
 const getRoomIdData = require('./getRoomIdData.js');
+const insertMsg = require('./insertMsg.js');
 
 
 app.use(cors()) // 跨域問題
@@ -15,6 +16,8 @@ app.post('/getMember',getMember);
 app.post('/getMsgLog',getMsgLog);
 // 抓預選的聊天室內容 => 之後要切分成不同數量與筆數
 app.post('/getRoomIdData', getRoomIdData);
+// 寫入留言
+app.post('/insertMsg', insertMsg);
 
 // server連線
 app.listen(4000, function () {

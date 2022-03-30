@@ -5,7 +5,7 @@ export default createStore({
     userId: null,//使用者id
     userName: "user",//使用者名字
     permission: 0,//使用者權限
-    showRoomId: "",//目前顯示的聊天室編號
+    showRoomId: 0,//目前顯示的聊天室編號
     showCusName: "",//對方名字
     showCusId: "",//對方id
     allRoomBox: [],//使用者擁有的聊天室
@@ -108,8 +108,11 @@ export default createStore({
       }).then((response) => {
         return response.json();
       }).then((data) => {
+        console.log("getRoomIdData",data)
         if (data.status === "success") {
           commit('updatatRoomIdData', data.result);
+        }else{
+          commit('updatatRoomIdData', []);
         }
       }).catch((err) => {
         console.log('錯誤getMember:', err);
@@ -185,8 +188,28 @@ export default createStore({
     },
     goChangeHam({ commit }, status) {
       commit('changeHam', status);
+    },
+    insertMsg({ commit },data){
+      console.log(commit);
+      console.log("insertMsg",data);
+      fetch(`http://localhost:4000/insertMsg`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify({
+          data: JSON.parse(data),
+        })
+      }).then((response) => {
+        return response.json();
+      }).then((data) => {
+        console.log("insertMsg",data)
+       
+      }).catch((err) => {
+        console.log('insertMsg:', err);
+      })
     }
-
+    
   },
   getters: {
     // 像 computed 一樣，運算處理 state 資料

@@ -21,7 +21,9 @@
             :key="index"
             :class="[msg.uid === uid ? 'mine' : '']"
           >
-            <p class="userName">{{ msg.uid === uid ? "" : getShowRoom.showCusName }}</p>
+            <p class="userName">
+              {{ msg.uid === uid ? "" : getShowRoom.showCusName }}
+            </p>
             <div v-if="msg.uid === uid">
               <p class="time">{{ msg.createtime }}</p>
               <p class="content" v-html="msg.msgContent"></p>
@@ -60,7 +62,7 @@
 </template>
 
 <script>
-import { onMounted, onUnmounted, reactive, ref, nextTick, computed, watch } from "vue";
+import { onMounted, reactive, ref, nextTick, computed, watch } from "vue";
 import { useStore } from "vuex";
 import moment from "moment";
 import { io } from "socket.io-client";
@@ -79,7 +81,7 @@ export default {
     const isShowBack = ref(false); // 回到最訊息的按鈕
     const messages = ref(""); // 輸入的訊息
     const roomId = ref(""); // 跟哪一位聊天
-    const nameCus = ref(""); // 聊天對像的名字
+    // const nameCus = ref(""); // 聊天對像的名字
     const cusId = ref(""); // 聊天對像的ID
     const arrMessages = reactive({ arr: [] }); // 對話data
     const todayDate = ref("");
@@ -92,20 +94,19 @@ export default {
       uid.value = store.state.userId;
       userName.value = store.state.userName;
       roomId.value = store.state.showRoomId;
-      nameCus.value = store.state.showCusName;
+      // nameCus.value = store.state.showCusName;
       cusId.value = store.state.showCusId;
       isPermission.value = store.state.permission === 1;
-      console.log("onMounted", roomId.value);
-      // arrMessages.arr = store.state.chatData;
-      console.log("a");
-      arrMessages.arr = a;
+      // console.log("onMounted roomId", roomId.value);
+      // console.log("onMounted nameCus", nameCus.value);
+      arrMessages.arr = showChatData;
       init();
     });
 
     const getShowRoom = computed(() => {
       return store.getters.getShowRoom;
     });
-    const a = computed(() => {
+    const showChatData = computed(() => {
       return store.getters.getChatData;
     });
 
@@ -113,20 +114,33 @@ export default {
       return store.getters.getHam;
     });
 
-    onUnmounted(() => {
-      console.log("unmounted", arrMessages); // 存資料庫
-    });
-
     watch(
       () => arrMessages.arr,
       async () => {
-        console.log("b");
         await nextTick();
+        // console.log("arrMessages.arr", arrMessages.arr);
         goBack();
+      }
+    );
+    watch(
+      () => roomId.value,
+      () => {
+        const arr = arrMessages.arr[arrMessages.arr.length - 1];
+        let date = new Date();
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        if (arr && arr.date) {
+          arr.date = `${year}-${month}-${day}`;
+          arr.roomId = arr.data[0].roomId;
+          store.dispatch("insertMsg", JSON.stringify(arr));
+          console.log("arr", arr);
+        }
       }
     );
 
     const init = async () => {
+      console.log(roomId.value);
       // 加入聊天室
       socket.emit("joinRoom", { username: uid.value, room: roomId.value });
 
@@ -141,9 +155,11 @@ export default {
           ) {
             arrMessages.arr[arrMessages.arr.length - 1].data.push({
               uid: id,
-              name: name,
+              roomId: roomId.value,
               msgContent: msg,
+              contentCategory: 0,
               createtime: time,
+              updatetime: null,
             });
           } else {
             arrMessages.arr[arrMessages.arr.length] = {
@@ -151,9 +167,11 @@ export default {
               data: [
                 {
                   uid: id,
-                  name: name,
+                  roomId: roomId.value,
                   msgContent: msg,
+                  contentCategory: 0,
                   createtime: time,
+                  updatetime: null,
                 },
               ],
             };
@@ -164,9 +182,11 @@ export default {
             data: [
               {
                 uid: id,
-                name: name,
+                roomId: roomId.value,
                 msgContent: msg,
+                contentCategory: 0,
                 createtime: time,
+                updatetime: null,
               },
             ],
           };
@@ -254,7 +274,7 @@ export default {
     };
 
     const checkmoreHeight = () => {
-      console.log(messages.value);
+      // console.log(messages.value);
       if (!messages.value) {
         moreHeightDom.value.rows = 1;
       }
@@ -269,7 +289,7 @@ export default {
       showBack,
       isShowBack,
       goBack,
-      nameCus,
+      // nameCus,
       moreHeight,
       moreHeightDom,
       checkmoreHeight,

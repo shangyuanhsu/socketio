@@ -50,7 +50,6 @@ export default {
 
     // 預選最上面的開啟
     const showRoom = (roomId, name, cusId) => {
-      console.log(roomId);
       store.dispatch("insertshowRoomId", { roomId, name, cusId });
       context.emit("updataChatData", roomId);
     };

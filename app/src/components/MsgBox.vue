@@ -57,7 +57,6 @@ export default {
       whichCategory.value = arrSearch.arr.filter(
         (item) => item.id === props.category
       )[0].title;
-      // console.log( whichCategory.value );
     });
 
     return {

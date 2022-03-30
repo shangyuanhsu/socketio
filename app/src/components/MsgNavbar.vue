@@ -32,7 +32,6 @@ export default {
       });
     });
     const showMsgBox = () => {
-      console.log(store.state.ham);
       store.dispatch("goChangeHam", !store.state.ham);
     };
 
