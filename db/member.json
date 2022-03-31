@@ -1,0 +1,66 @@
+[{
+  "_id": {
+    "$oid": "6242616df6bacc39242631a4"
+  },
+  "name": "Sara",
+  "status": 0,
+  "permission": 1,
+  "img": "img/user.png",
+  "createtime": {
+    "$date": "2022-03-29T01:31:25.169Z"
+  },
+  "uid": 1,
+  "updatetime": null
+},{
+  "_id": {
+    "$oid": "62426536798774c458452095"
+  },
+  "name": "Amy",
+  "status": 0,
+  "permission": 0,
+  "img": "img/user.png",
+  "createtime": {
+    "$date": "2022-03-29T01:31:25.169Z"
+  },
+  "uid": 2,
+  "updatetime": null
+},{
+  "_id": {
+    "$oid": "62426547798774c458452096"
+  },
+  "name": "Tom",
+  "status": 0,
+  "permission": 0,
+  "img": "img/user.png",
+  "createtime": {
+    "$date": "2022-03-29T01:31:25.169Z"
+  },
+  "uid": 3,
+  "updatetime": null
+},{
+  "_id": {
+    "$oid": "62426551798774c458452097"
+  },
+  "name": "Loe",
+  "status": 0,
+  "permission": 0,
+  "img": "img/user.png",
+  "createtime": {
+    "$date": "2022-03-29T01:31:25.169Z"
+  },
+  "uid": 4,
+  "updatetime": null
+},{
+  "_id": {
+    "$oid": "62426561798774c458452098"
+  },
+  "name": "Judy",
+  "status": 0,
+  "permission": 0,
+  "img": "img/user.png",
+  "createtime": {
+    "$date": "2022-03-29T01:31:25.169Z"
+  },
+  "uid": 5,
+  "updatetime": null
+}]

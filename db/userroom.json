@@ -1,0 +1,73 @@
+[{
+  "_id": {
+    "$oid": "6242bfe5ee40e8e0b6611083"
+  },
+  "uid": 1,
+  "roomId": 1,
+  "createtime": {
+    "$date": "2022-03-29T08:14:29.887Z"
+  },
+  "updatetime": {
+    "$date": "2022-03-31T06:33:23.769Z"
+  },
+  "lastMsg": "234",
+  "category": 1,
+  "process": 0,
+  "cusId": 2,
+  "cusName": "Amy",
+  "read": true
+},{
+  "_id": {
+    "$oid": "62453fe43ae6aef5b168c30a"
+  },
+  "uid": 2,
+  "roomId": 1,
+  "createtime": {
+    "$date": "2022-03-29T08:14:29.887Z"
+  },
+  "updatetime": {
+    "$date": "2022-03-31T06:33:23.769Z"
+  },
+  "lastMsg": "234",
+  "category": 1,
+  "process": 0,
+  "cusId": 1,
+  "cusName": "Sara",
+  "read": true
+},{
+  "_id": {
+    "$oid": "624540393ae6aef5b168c30b"
+  },
+  "uid": 1,
+  "roomId": 3,
+  "createtime": {
+    "$date": "2022-03-31T16:00:00Z"
+  },
+  "updatetime": {
+    "$date": "2022-03-31T09:05:10.796Z"
+  },
+  "lastMsg": "!!!!",
+  "category": 3,
+  "process": 0,
+  "cusId": 4,
+  "cusName": "Leo",
+  "read": false
+},{
+  "_id": {
+    "$oid": "624540423ae6aef5b168c30c"
+  },
+  "uid": 4,
+  "roomId": 3,
+  "createtime": {
+    "$date": "2022-03-31T16:00:00Z"
+  },
+  "updatetime": {
+    "$date": "2022-03-31T09:05:10.796Z"
+  },
+  "lastMsg": "!!!!",
+  "category": 3,
+  "process": 0,
+  "cusId": 1,
+  "cusName": "Sara",
+  "read": true
+}]
