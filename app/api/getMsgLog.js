@@ -19,12 +19,13 @@ module.exports = function (req, res) {
             if (err) throw err;
             console.log(result);
           
-            function a(){
+            function showData(){
                 return new Promise((resolve) => {
                     const arr = [];
                     for (let i = 0; i < result.length; i++) {
                         const tem =
                         {
+                            read: result[i].read,
                             roomId: result[i].roomId,
                             cusId: result[i].cusId,
                             name: result[i].cusName,
@@ -40,8 +41,8 @@ module.exports = function (req, res) {
                 })
             }
             
-            let d = await a();
-            dataTem.result = d;
+            let fin = await showData();
+            dataTem.result = fin;
             res.json(dataTem);
             db.close();
         })

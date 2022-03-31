@@ -438,30 +438,34 @@ li > .mine > div {
   justify-content: flex-end;
 }
 .time {
+  color: rgb(180, 180, 180);
   font-size: 10px;
   margin-bottom: 2px;
   min-width: 100px;
 }
 .content {
-  padding: 5px 8px;
-  border-radius: 8px;
-  border: 1px solid rgb(209, 209, 209);
+  padding: 8px 16px;
+  border-radius: 20px;
+  background: rgb(240, 240, 240);
   margin: 2px 4px 0 0;
   position: relative;
   word-break: break-word;
 }
+
 .mine .content {
   background: none;
   margin: 2px 0 0 4px;
-  background: rgb(209, 209, 209);
+  background: rgb(228 247 216);
 }
+
 .mine .time {
   text-align: right;
 }
 .zoneTime {
+  color: gray;
   text-align: center;
   font-size: 8px;
-  background: rgb(241, 241, 241);
+  background: rgb(248, 248, 248);
   border-radius: 20px;
   padding: 2px;
 }
@@ -469,7 +473,9 @@ li > .mine > div {
   margin: 30px 0 20px 0;
 }
 .userName {
-  font-size: 14px;
+  color: gray;
+  margin: 5px 0;
+  font-size: 8px;
 }
 .goBack {
   position: absolute;

@@ -4,10 +4,13 @@
     <MsgSet @whichProcess="whichProcess" />
     <div class="allMsgBox">
       <MsgBox
-        v-for="(item, index) in arrMyFriendBox"
-        :key="index"
+        v-for="item in arrMyFriendBox"
+        :key="item.roomId"
+        :thisRoomId="item.roomId"
         :name="item.name"
+        :createtime="item.createtime"
         :category="item.category"
+        :read="item.read"
         :lastMsg="item.msg"
         :img="require('@/assets/' + item.img)"
         v-show="process === item.status && (search === item.category || search === 0)"
@@ -18,7 +21,7 @@
 </template>
 
 <script>
-import { onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed, nextTick } from "vue";
 import { useStore } from "vuex";
 import MsgSearch from "@/components/MsgSearch.vue";
 import MsgSet from "@/components/MsgSet.vue";
@@ -38,7 +41,8 @@ export default {
     const process = ref(0);
     const search = ref(0);
     //開始
-    onMounted(() => {
+    onMounted(async () => {
+      await nextTick();
       isPermission.value = store.state.permission === 1;
       store.dispatch("selectUserMsgData");
     });

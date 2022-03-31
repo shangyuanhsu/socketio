@@ -13,17 +13,18 @@ module.exports = (req, res) => {
             var newvalues = { $set: { data: data.data } };
             dbo.collection("msglog").updateOne({ date: data.date, roomId: data.roomId }, newvalues, function (err, result) {
                 if (err) throw err;
-                res.json({ status: "success",result:"updateMsg"});
-                db.close();
+                // res.json({ status: "success",result:"updateMsg"});
+                // db.close();
             })
+            
         }
 
         // 寫入
         const insertMsg = () => {
             dbo.collection("msglog").insertOne(data, function (err, result) {
                 if (err) throw err;
-                res.json({ status: "success",result:"insertMsg"});
-                db.close();
+                // res.json({ status: "success",result:"insertMsg"});
+                // db.close();
             });
         }
 
@@ -34,6 +35,11 @@ module.exports = (req, res) => {
             } else {
                 insertMsg();
             }
+            dbo.collection("userroom").updateMany({ roomId: data.roomId },  {$set:{updatetime:new Date(),lastMsg:data.data[data.data.length - 1]['msgContent']}}, function (err, result) {
+                if (err) throw err;
+                res.json({ status: "success"})
+                db.close();
+            })
         })
     });
 }

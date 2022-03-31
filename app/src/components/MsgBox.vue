@@ -1,5 +1,5 @@
 <template>
-  <div class="msgBox">
+  <div :class="[checkRoomId === roomId ? 'msgBox check' : 'msgBox']">
     <div class="userImg">
       <img :src="imgUrl" alt="" />
     </div>
@@ -17,17 +17,18 @@
         >
           {{ whichCategory }}
         </div>
-        <div class="time">Monday</div>
+        <div class="time">{{ time }}</div>
       </div>
       <div class="otherUser">{{ cusName }}</div>
       <div class="cusMsg">{{ cusMsg }}</div>
     </div>
+    <div class="wram" v-show="isRead">!</div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from "vue";
-
+import { computed, onMounted, ref } from "vue";
+import { useStore } from "vuex";
 export default {
   name: "MsgBox",
   props: {
@@ -35,12 +36,20 @@ export default {
     category: Number,
     lastMsg: String,
     img: String,
+    createtime: String,
+    read: Boolean,
+    thisRoomId: Number,
   },
   setup(props) {
+    const store = useStore();
+
+    const checkRoomId = ref(0);
     const cusName = ref("");
     const whichCategory = ref("");
     const cusMsg = ref("");
     const imgUrl = ref("");
+    const time = ref("");
+    const isRead = ref(false);
     const arrSearch = {
       arr: [
         { id: 0, title: "All" },
@@ -51,12 +60,20 @@ export default {
     };
     //開始
     onMounted(() => {
+      checkRoomId.value = props.thisRoomId;
       cusName.value = props.name;
       cusMsg.value = props.lastMsg;
       imgUrl.value = props.img;
+      time.value = props.createtime;
+      isRead.value = props.read;
+
       whichCategory.value = arrSearch.arr.filter(
         (item) => item.id === props.category
       )[0].title;
+      console.log("msgBox", roomId.value, "/", checkRoomId.value);
+    });
+    const roomId = computed(() => {
+      return store.state.showRoomId;
     });
 
     return {
@@ -64,6 +81,10 @@ export default {
       whichCategory,
       cusMsg,
       imgUrl,
+      time,
+      checkRoomId,
+      roomId,
+      isRead,
     };
   },
 };
@@ -76,9 +97,22 @@ export default {
   justify-content: space-between;
   padding: 20px 10px;
   cursor: pointer;
+  position: relative;
+}
+.wram {
+  position: absolute;
+  bottom: 24px;
+  right: 20px;
+  padding: 2px 9px;
+  border-radius: 70%;
+  background-color: rgb(250, 210, 210);
+  color: brown;
+}
+.msgBox.check {
+  background-color: rgba(240, 240, 240, 0.527);
 }
 .msgBox:not(:first-child) {
-  border-top: 1px solid rgb(243, 243, 243);
+  border-bottom: 1px solid rgb(243, 243, 243);
 }
 .userImg {
   margin: 0 4px;

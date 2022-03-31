@@ -63,7 +63,7 @@ export default createStore({
       })
     },
     // 抓使用者有的聊天紀錄
-    selectUserMsgData({ state, commit, dispatch }) {
+    selectUserMsgData({ state, commit, dispatch },change = false) {
 
       fetch('http://localhost:4000/getMsgLog', {
         method: 'POST',
@@ -78,8 +78,10 @@ export default createStore({
       }).then((data) => {
         if (data.status === "success") {
           commit('insertRoomBox', data.result);
-          dispatch("insertshowRoomId", data.result[0]);
-          dispatch("selectRoomId", data.result[0].roomId);
+          if(!change){
+            dispatch("insertshowRoomId", data.result[0]);
+            dispatch("selectRoomId", data.result[0].roomId);
+          }
         }
       }).catch((err) => {
         console.log('錯誤getMember:', err);
@@ -119,8 +121,8 @@ export default createStore({
       commit('changeHam', status);
     },
      //寫入聊天內容
-    insertMsg({ commit }, data) {
-      console.log(commit);
+    insertMsg({ dispatch }, data) {
+      // console.log(commit);
       fetch(`http://localhost:4000/insertMsg`, {
         method: 'POST',
         headers: {
@@ -132,7 +134,9 @@ export default createStore({
       }).then((response) => {
         return response.json();
       }).then((data) => {
-        console.log("insertMsg", data)
+        console.log("insertMsg", data);
+        dispatch("selectUserMsgData",true);
+        
       }).catch((err) => {
         console.log('insertMsg:', err);
       })
