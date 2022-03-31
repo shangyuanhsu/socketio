@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 import router from "@/router";
 export default createStore({
-  state: { // 所有在 store 裏的資料
+  state: {
     userId: null,//使用者id
     userName: "user",//使用者名字
     permission: 0,//使用者權限
@@ -12,7 +12,7 @@ export default createStore({
     chatData: [],//當前聊天的內容
     ham: false,//漢堡選單開關
   },
-  mutations: {// 負責改變 state 裏的資料
+  mutations: {
     changeUserId(state, data) {
       state.userId = data.id;
       state.userName = data.name;
@@ -35,10 +35,6 @@ export default createStore({
 
   },
   actions: {
-    // 負責觸發 mutations
-    // ajax 要在 Actions 裡面做，不可以在 Mutations 裡面做
-    // 可處理非同步程式（e.g: 打 API）
-    //==================================================
     // 寫入使用者的ID和名字
     insertUserId({ commit }, id) {
       fetch('http://localhost:4000/getMember', {
@@ -81,7 +77,7 @@ export default createStore({
         return response.json();
       }).then((data) => {
         if (data.status === "success") {
-          console.log("getMsgLog",data)
+          // console.log("getMsgLog",data)
           commit('insertRoomBox', data.result);
           dispatch("insertshowRoomId", data.result[0]);
           dispatch("selectRoomId", data.result[0].roomId);
@@ -97,101 +93,35 @@ export default createStore({
     },
     //聊天室內容
     selectRoomId({ commit }, id) {
-      fetch(`http://localhost:4000/getRoomIdData`, {
+      console.log(id)
+      fetch(`http://localhost:4000/getRoomIdData?${Math.random() * 1000}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json;charset=utf-8'
         },
         body: JSON.stringify({
           roomId: id,
-        })
+        }),
+        cache: 'no-cache'
       }).then((response) => {
         return response.json();
       }).then((data) => {
-        console.log("getRoomIdData",data)
+        console.log("getRoomIdData", data)
         if (data.status === "success") {
           commit('updatatRoomIdData', data.result);
-        }else{
+        } else {
           commit('updatatRoomIdData', []);
         }
       }).catch((err) => {
         console.log('錯誤getMember:', err);
       })
-
-
-
-      // let data = [];
-      // if (id == 1) {
-      //   data = [
-      //     {
-      //       date: "Mar 1th 22",
-      //       data: [
-      //         {
-      //           uid: 2,
-      //           name: "Amy",
-      //           content: "hello~",
-      //           time: "7:31 AM",
-      //         },
-      //         {
-      //           uid: 1,
-      //           name: "Sara",
-      //           content: "🙌",
-      //           time: "7:33 AM",
-      //         },
-      //         {
-      //           uid: 2,
-      //           name: "Amy",
-      //           content: "I need help",
-      //           time: "8:00 AM",
-      //         },
-      //       ],
-      //     },
-      //     {
-      //       date: "Mar 2th 22",
-      //       data: [
-      //         {
-      //           uid: 1,
-      //           name: "Sara",
-      //           content: "what happened",
-      //           time: "7:25 AM",
-      //         },
-      //         {
-      //           uid: 1,
-      //           name: "Sara",
-      //           content: "??",
-      //           time: "7:40 AM",
-      //         },
-      //         {
-      //           uid: 2,
-      //           name: "Amy",
-      //           content: "could u teach me vue?",
-      //           time: "8:10 AM",
-      //         },
-      //         {
-      //           uid: 2,
-      //           name: "Amy",
-      //           content: "i can't build vue cli and can't new a project",
-      //           time: "8:22 AM",
-      //         },
-      //         {
-      //           uid: 2,
-      //           name: "Amy",
-      //           content: "do u have time",
-      //           time: "9:12 AM",
-      //         },
-      //       ],
-      //     },
-      //   ];
-      // }
-
-
     },
     goChangeHam({ commit }, status) {
       commit('changeHam', status);
     },
-    insertMsg({ commit },data){
+    insertMsg({ commit }, data) {
       console.log(commit);
-      console.log("insertMsg",data);
+      // console.log("insertMsg",data);
       fetch(`http://localhost:4000/insertMsg`, {
         method: 'POST',
         headers: {
@@ -203,19 +133,19 @@ export default createStore({
       }).then((response) => {
         return response.json();
       }).then((data) => {
-        console.log("insertMsg",data)
-       
+        console.log("insertMsg", data)
+
       }).catch((err) => {
         console.log('insertMsg:', err);
       })
     }
-    
+
   },
   getters: {
     // 像 computed 一樣，運算處理 state 資料
     //==================================================
     getShowRoom: (state) => {
-      return {showRoomId:state.showRoomId,showCusName:state.showCusName}
+      return { showRoomId: state.showRoomId, showCusName: state.showCusName }
     },
     getAllRoomBox: (state) => {
       return state.allRoomBox

@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { onMounted, reactive, ref, nextTick, computed, watch } from "vue";
+import { onMounted, onUnmounted, reactive, ref, nextTick, computed, watch } from "vue";
 import { useStore } from "vuex";
 import moment from "moment";
 import { io } from "socket.io-client";
@@ -85,12 +85,19 @@ export default {
     const cusId = ref(""); // 聊天對像的ID
     const arrMessages = reactive({ arr: [] }); // 對話data
     const todayDate = ref("");
+    const isSave = ref(false);
 
     const socket = io("http://localhost:3000/"); // 聊天室連線
 
     // 開始
     onMounted(() => {
-      todayDate.value = moment().format("MMM Do YY");
+      let date = new Date();
+      let year = date.getFullYear();
+      let month = date.getMonth() + 1;
+      let day = date.getDate();
+      let today = `${year}-${month}-${day}`;
+
+      todayDate.value = today;
       uid.value = store.state.userId;
       userName.value = store.state.userName;
       roomId.value = store.state.showRoomId;
@@ -101,6 +108,22 @@ export default {
       // console.log("onMounted nameCus", nameCus.value);
       arrMessages.arr = showChatData;
       init();
+    });
+
+    onUnmounted(() => {
+      console.log("onUnmounted");
+      const arr = arrMessages.arr[arrMessages.arr.length - 1];
+      if (arr && arr.date && isSave.value) {
+        console.log(arr, todayDate.value, arr.date);
+        if (arr.date === todayDate.value || arr.date === "today") {
+          console.log("存");
+          arr.date = todayDate.value;
+          arr.roomId = arr.data[0].roomId;
+          store.dispatch("insertMsg", JSON.stringify(arr));
+          console.log("arr", arr);
+        }
+        isSave.value = false;
+      }
     });
 
     const getShowRoom = computed(() => {
@@ -122,25 +145,29 @@ export default {
         goBack();
       }
     );
-    watch(
-      () => roomId.value,
-      () => {
-        const arr = arrMessages.arr[arrMessages.arr.length - 1];
-        let date = new Date();
-        let year = date.getFullYear();
-        let month = date.getMonth() + 1;
-        let day = date.getDate();
-        if (arr && arr.date) {
-          arr.date = `${year}-${month}-${day}`;
-          arr.roomId = arr.data[0].roomId;
-          store.dispatch("insertMsg", JSON.stringify(arr));
-          console.log("arr", arr);
-        }
-      }
-    );
+    // watch(
+    //   () => roomId.value,
+    //   () => {
+    //     const arr = arrMessages.arr[arrMessages.arr.length - 1];
+    //     // let date = new Date();
+    //     // let year = date.getFullYear();
+    //     // let month = date.getMonth() + 1;
+    //     // let day = date.getDate();
+    //     // let today = `${year}-${month}-${day}`;
+
+    //     if (arr && arr.date) {
+    //       console.log(arr, arr.date);
+    //       if (arr.date === todayDate.value || arr.date === "today") {
+    //         arr.date = todayDate.value;
+    //         arr.roomId = arr.data[0].roomId;
+    //         store.dispatch("insertMsg", JSON.stringify(arr));
+    //         console.log("arr", arr);
+    //       }
+    //     }
+    //   }
+    // );
 
     const init = async () => {
-      console.log(roomId.value);
       // 加入聊天室
       socket.emit("joinRoom", { username: uid.value, room: roomId.value });
 
@@ -209,6 +236,7 @@ export default {
           sendTime
         );
         socket.emit("checkedNewMsg", uid.value);
+        isSave.value = true;
       }
       messages.value = "";
       moreHeightDom.value.rows = 1;

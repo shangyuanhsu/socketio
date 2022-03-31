@@ -51,7 +51,10 @@ export default {
     });
 
     const updataChatData = (roomId) => {
+      console.log("updataChatData roomId", roomId);
       store.dispatch("selectRoomId", roomId);
+      // console.log(" store.state.showRoomId", store.state.showRoomId);
+
       // componentKey.value = roomId;
     };
 

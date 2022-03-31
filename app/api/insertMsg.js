@@ -2,9 +2,6 @@ const { MongoClient, url } = require('./mongodbConnect');
 
 module.exports = (req, res) => {
     const data = req.body.data;
-    console.log("===========", data);
-
-
 
     MongoClient.connect(url, function (err, db) {
         if (err) throw err;
@@ -12,26 +9,28 @@ module.exports = (req, res) => {
 
         const updateMsg = () => {
             var newvalues = { $set: { data: data.data } };
-            dbo.collection("msglog").updateOne({ date: data.date, roomId: data.roomId }, newvalues, function (err, res) {
+            dbo.collection("msglog").updateOne({ date: data.date, roomId: data.roomId }, newvalues, function (err, result) {
                 if (err) throw err;
+                res.json({ status: "success",result:"updateMsg"});
                 db.close();
             })
         }
 
         const insertMsg = () => {
-            dbo.collection("msglog").insertOne(data, function (err, res) {
+            dbo.collection("msglog").insertOne(data, function (err, result) {
                 if (err) throw err;
+                res.json({ status: "success",result:"insertMsg"});
                 db.close();
             });
         }
 
 
-        dbo.collection("msglog").findOne({ date: data.date }, function (err, res) {
+        dbo.collection("msglog").findOne({ date: data.date,roomId: data.roomId }, function (err, result) {
             if (err) throw err;
-            if (res) {
-                updateMsg()
+            if (result) {
+                updateMsg();
             } else {
-                insertMsg()
+                insertMsg();
             }
         })
 
