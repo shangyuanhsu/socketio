@@ -77,7 +77,6 @@ export default createStore({
         return response.json();
       }).then((data) => {
         if (data.status === "success") {
-          // console.log("getMsgLog",data)
           commit('insertRoomBox', data.result);
           dispatch("insertshowRoomId", data.result[0]);
           dispatch("selectRoomId", data.result[0].roomId);
@@ -106,7 +105,6 @@ export default createStore({
       }).then((response) => {
         return response.json();
       }).then((data) => {
-        console.log("getRoomIdData", data)
         if (data.status === "success") {
           commit('updatatRoomIdData', data.result);
         } else {
@@ -116,12 +114,13 @@ export default createStore({
         console.log('錯誤getMember:', err);
       })
     },
+     //開關漢堡選單
     goChangeHam({ commit }, status) {
       commit('changeHam', status);
     },
+     //寫入聊天內容
     insertMsg({ commit }, data) {
       console.log(commit);
-      // console.log("insertMsg",data);
       fetch(`http://localhost:4000/insertMsg`, {
         method: 'POST',
         headers: {
@@ -134,7 +133,6 @@ export default createStore({
         return response.json();
       }).then((data) => {
         console.log("insertMsg", data)
-
       }).catch((err) => {
         console.log('insertMsg:', err);
       })
@@ -142,8 +140,6 @@ export default createStore({
 
   },
   getters: {
-    // 像 computed 一樣，運算處理 state 資料
-    //==================================================
     getShowRoom: (state) => {
       return { showRoomId: state.showRoomId, showCusName: state.showCusName }
     },
@@ -158,7 +154,6 @@ export default createStore({
     }
   },
   modules: {
-    // 按需求分拆 module
-    // 每個 module 都有自己的state, actions, mutations, getters, modules
+
   }
 })

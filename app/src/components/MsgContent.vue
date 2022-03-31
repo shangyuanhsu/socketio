@@ -81,12 +81,10 @@ export default {
     const isShowBack = ref(false); // 回到最訊息的按鈕
     const messages = ref(""); // 輸入的訊息
     const roomId = ref(""); // 跟哪一位聊天
-    // const nameCus = ref(""); // 聊天對像的名字
     const cusId = ref(""); // 聊天對像的ID
     const arrMessages = reactive({ arr: [] }); // 對話data
     const todayDate = ref("");
     const isSave = ref(false);
-
     const socket = io("http://localhost:3000/"); // 聊天室連線
 
     // 開始
@@ -101,30 +99,33 @@ export default {
       uid.value = store.state.userId;
       userName.value = store.state.userName;
       roomId.value = store.state.showRoomId;
-      // nameCus.value = store.state.showCusName;
       cusId.value = store.state.showCusId;
       isPermission.value = store.state.permission === 1;
-      // console.log("onMounted roomId", roomId.value);
-      // console.log("onMounted nameCus", nameCus.value);
       arrMessages.arr = showChatData;
+
       init();
     });
 
     onUnmounted(() => {
-      console.log("onUnmounted");
       const arr = arrMessages.arr[arrMessages.arr.length - 1];
       if (arr && arr.date && isSave.value) {
         console.log(arr, todayDate.value, arr.date);
         if (arr.date === todayDate.value || arr.date === "today") {
-          console.log("存");
           arr.date = todayDate.value;
           arr.roomId = arr.data[0].roomId;
           store.dispatch("insertMsg", JSON.stringify(arr));
-          console.log("arr", arr);
         }
         isSave.value = false;
       }
     });
+
+    watch(
+      () => arrMessages.arr,
+      async () => {
+        await nextTick();
+        goBack();
+      }
+    );
 
     const getShowRoom = computed(() => {
       return store.getters.getShowRoom;
@@ -136,36 +137,6 @@ export default {
     const showHam = computed(() => {
       return store.getters.getHam;
     });
-
-    watch(
-      () => arrMessages.arr,
-      async () => {
-        await nextTick();
-        // console.log("arrMessages.arr", arrMessages.arr);
-        goBack();
-      }
-    );
-    // watch(
-    //   () => roomId.value,
-    //   () => {
-    //     const arr = arrMessages.arr[arrMessages.arr.length - 1];
-    //     // let date = new Date();
-    //     // let year = date.getFullYear();
-    //     // let month = date.getMonth() + 1;
-    //     // let day = date.getDate();
-    //     // let today = `${year}-${month}-${day}`;
-
-    //     if (arr && arr.date) {
-    //       console.log(arr, arr.date);
-    //       if (arr.date === todayDate.value || arr.date === "today") {
-    //         arr.date = todayDate.value;
-    //         arr.roomId = arr.data[0].roomId;
-    //         store.dispatch("insertMsg", JSON.stringify(arr));
-    //         console.log("arr", arr);
-    //       }
-    //     }
-    //   }
-    // );
 
     const init = async () => {
       // 加入聊天室
@@ -241,6 +212,7 @@ export default {
       messages.value = "";
       moreHeightDom.value.rows = 1;
     };
+
     // 滑到最新的訊息
     const goBack = () => {
       if (show.value) {
@@ -251,6 +223,7 @@ export default {
         isShowBack.value = false;
       }
     };
+
     // 顯示/隱藏回到最新消息的按鈕
     const showBack = (e) => {
       // 滾輪不在底時
@@ -266,6 +239,7 @@ export default {
         olderMsg(); // 要去撈更舊的對話紀錄
       }
     };
+
     // 滾輪到最上面時，要去撈更舊的對話紀錄 (模擬)
     const olderMsg = () => {
       // const newMsgData = {
@@ -317,7 +291,6 @@ export default {
       showBack,
       isShowBack,
       goBack,
-      // nameCus,
       moreHeight,
       moreHeightDom,
       checkmoreHeight,

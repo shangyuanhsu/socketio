@@ -40,7 +40,7 @@ export default {
       arrProcess.arr = arrProcess.arr.map((item, ind) => {
         return {
           ...item,
-          checked: index === ind ? true : false,
+          checked: index === ind,
         };
       });
       const p = arrProcess.arr.filter((item) => item.checked);

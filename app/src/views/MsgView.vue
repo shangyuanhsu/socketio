@@ -26,7 +26,7 @@ export default {
   },
   setup() {
     const store = useStore();
-    // const componentKey = ref(0);
+
     const socket = io("http://localhost:3000/"); // 聊天室連線
     //開始
     onMounted(() => {
@@ -35,7 +35,6 @@ export default {
         alert("ID ERROR !");
         router.push({ name: "login" });
       } else {
-        // console.log("showRoomId", store.state.showRoomId);
         updataChatData(store.state.showRoomId);
       }
 
@@ -53,9 +52,6 @@ export default {
     const updataChatData = (roomId) => {
       console.log("updataChatData roomId", roomId);
       store.dispatch("selectRoomId", roomId);
-      // console.log(" store.state.showRoomId", store.state.showRoomId);
-
-      // componentKey.value = roomId;
     };
 
     return {

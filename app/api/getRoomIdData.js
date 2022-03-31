@@ -4,8 +4,8 @@ const { MongoClient, url } = require('./mongodbConnect');
 module.exports = (req, res) => {
     const data = req.body;
     const roomId = data.roomId;
-    console.log(roomId);
-    if (roomId && roomId!=0) {
+
+    if (roomId && roomId != 0) {
         MongoClient.connect(url, (err, db) => {
             if (err) throw err;
             var dbo = db.db("chatroom");
@@ -21,7 +21,6 @@ module.exports = (req, res) => {
                 }
                 res.json(data);
                 db.close();
-                
             })
         })
     }
