@@ -1,5 +1,5 @@
 // 抓預選的聊天室內容 => 之後要切分成不同數量與筆數
-const { MongoClient, url } = require('./mongodbConnect');
+const { MongoClient, url } = require('./conbook');
 
 module.exports = (req, res) => {
     const data = req.body;

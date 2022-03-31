@@ -20,7 +20,7 @@
         <div class="time">Monday</div>
       </div>
       <div class="otherUser">{{ cusName }}</div>
-      <div>{{ cusMsg }}</div>
+      <div class="cusMsg">{{ cusMsg }}</div>
     </div>
   </div>
 </template>
@@ -119,5 +119,11 @@ export default {
 .boxData .otherUser {
   font-size: 20px;
   font-weight: bold;
+}
+.cusMsg {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 170px;
 }
 </style>

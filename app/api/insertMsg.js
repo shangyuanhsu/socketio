@@ -1,5 +1,5 @@
 // 寫入訊息
-const { MongoClient, url } = require('./mongodbConnect');
+const { MongoClient, url } = require('./conbook');
 
 module.exports = (req, res) => {
     const data = req.body.data;

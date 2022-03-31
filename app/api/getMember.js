@@ -1,5 +1,5 @@
 // 確認會員身分
-const { MongoClient, url } = require('./mongodbConnect');
+const { MongoClient, url } = require('./conbook');
 
 module.exports = (req, res) => {
 
