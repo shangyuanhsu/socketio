@@ -16,7 +16,6 @@ import MsgNavbar from "@/components/MsgNavbar.vue";
 import MsgSide from "@/components/MsgSide.vue";
 import MsgContent from "@/components/MsgContent.vue";
 import { io } from "socket.io-client";
-
 export default {
   name: "MsgView",
   components: {
@@ -26,8 +25,8 @@ export default {
   },
   setup() {
     const store = useStore();
-
     const socket = io("http://localhost:3000/"); // 聊天室連線
+
     //開始
     onMounted(() => {
       if (!store.state.userId) {
@@ -37,12 +36,6 @@ export default {
       } else {
         updataChatData(store.state.showRoomId);
       }
-
-      // 有沒有訊息現在在server上
-      socket.emit("checkedNewMsg", store.state.userId);
-      socket.on("checkedNewMsg", function () {
-        // console.log(data);
-      });
     });
 
     const componentKey = computed(() => {

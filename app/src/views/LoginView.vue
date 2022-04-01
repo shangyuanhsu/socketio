@@ -9,12 +9,18 @@
 <script>
 import { useStore } from "vuex";
 import { onMounted, ref } from "vue";
+import { io } from "socket.io-client";
+
 export default {
   name: "LoginView",
   setup() {
     const store = useStore();
+    const socket = io("http://localhost:3000/"); // 聊天室連線
+
     const uid = ref(""); //輸入使用者ID
-    onMounted(() => {});
+    onMounted(() => {
+      socket.on("disconnect");
+    });
     // 使用者輸入ID
     const getUserId = () => {
       store.dispatch("insertUserId", Number(uid.value));

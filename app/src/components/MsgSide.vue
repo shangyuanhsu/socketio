@@ -2,31 +2,39 @@
   <div :class="['msgSide', { showLeft: showHam }]">
     <MsgSearch @whichSearch="whichSearch" v-if="isPermission" />
     <MsgSet @whichProcess="whichProcess" />
-    <div class="allMsgBox">
-      <MsgBox
-        v-for="item in arrMyFriendBox"
-        :key="item.roomId"
-        :thisRoomId="item.roomId"
-        :name="item.name"
-        :createtime="item.createtime"
-        :category="item.category"
-        :read="item.read"
-        :lastMsg="item.msg"
-        :img="require('@/assets/' + item.img)"
-        v-show="process === item.status && (search === item.category || search === 0)"
-        @click="showRoom(item.roomId, item.name, item.cusId)"
-      />
+    <div class="allMsgBox" ref="show">
+      <div v-for="item in arrMyFriendBox" :key="item.roomId">
+        <MsgBox
+          :thisRoomId="item.roomId"
+          :name="item.name"
+          :createtime="
+            showArr.arr[item.roomId]
+              ? showArr.arr[item.roomId][showArr.arr[item.roomId].length - 1].time
+              : item.createtime
+          "
+          :category="item.category"
+          :read="item.read"
+          :lastMsg="
+            showArr.arr[item.roomId]
+              ? showArr.arr[item.roomId][showArr.arr[item.roomId].length - 1].txt
+              : item.msg
+          "
+          :img="require('@/assets/' + item.img)"
+          v-show="process === item.status && (search === item.category || search === 0)"
+          @click="showRoom(item.roomId, item.name, item.cusId)"
+        />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref, computed, nextTick } from "vue";
+import { onMounted, ref, computed, reactive } from "vue";
 import { useStore } from "vuex";
 import MsgSearch from "@/components/MsgSearch.vue";
 import MsgSet from "@/components/MsgSet.vue";
 import MsgBox from "@/components/MsgBox.vue";
-
+import { io } from "socket.io-client";
 export default {
   name: "MsgSide",
   components: {
@@ -36,15 +44,24 @@ export default {
   },
   emits: ["updataChatData"],
   setup(props, context) {
+    const socket = io("http://localhost:3000/"); // 聊天室連線
     const store = useStore();
     const isPermission = ref(false);
     const process = ref(0);
     const search = ref(0);
+    const show = ref(null);
+    const showArr = reactive({ arr: [] });
+
     //開始
-    onMounted(async () => {
-      await nextTick();
+    onMounted(() => {
       isPermission.value = store.state.permission === 1;
       store.dispatch("selectUserMsgData");
+      // 有沒有訊息現在在server上
+      socket.on("checkedNewMsg", function (obj) {
+        showArr.arr = obj;
+        // await nextTick();
+        store.dispatch("selectUserMsgData", true);
+      });
     });
 
     // 渲染側邊聊天室
@@ -81,6 +98,8 @@ export default {
       search,
       isPermission,
       showHam,
+      showArr,
+      show,
     };
   },
 };

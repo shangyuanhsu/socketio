@@ -122,7 +122,6 @@ export default createStore({
     },
      //寫入聊天內容
     insertMsg({ dispatch }, data) {
-      // console.log(commit);
       fetch(`http://localhost:4000/insertMsg`, {
         method: 'POST',
         headers: {
@@ -135,8 +134,7 @@ export default createStore({
         return response.json();
       }).then((data) => {
         console.log("insertMsg", data);
-        dispatch("selectUserMsgData",true);
-        
+        dispatch("selectUserMsgData", true);
       }).catch((err) => {
         console.log('insertMsg:', err);
       })

@@ -33,7 +33,7 @@ module.exports = function (req, res) {
                             msg: result[i].lastMsg,
                             status:result[i].process,
                             img:"img/user.png",
-                            createtime:moment(result[i].updatetime).fromNow().split("days").length > 1 || moment(result[i].updatetime).fromNow().split("year").length > 1 ? moment(result[i].updatetime).format("MMM Do YY") : moment(result[i].updatetime).fromNow()
+                            createtime:moment(result[i].updatetime).fromNow().split("days").length > 1 || moment(result[i].updatetime).fromNow().split("year").length > 1 ? moment(result[i].updatetime).format('YYYY-MM-DD') :  moment(result[i].updatetime).format("LT")
                         };
                         arr.push(tem);
                     }

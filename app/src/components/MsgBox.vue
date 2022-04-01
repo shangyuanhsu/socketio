@@ -20,14 +20,14 @@
         <div class="time">{{ time }}</div>
       </div>
       <div class="otherUser">{{ cusName }}</div>
-      <div class="cusMsg">{{ cusMsg }}</div>
+      <div class="cusMsg" :ref="show">{{ cusMsg }}</div>
     </div>
     <div class="wram" v-show="isRead">!</div>
   </div>
 </template>
 
 <script>
-import { computed, onMounted, ref } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useStore } from "vuex";
 export default {
   name: "MsgBox",
@@ -42,7 +42,6 @@ export default {
   },
   setup(props) {
     const store = useStore();
-
     const checkRoomId = ref(0);
     const cusName = ref("");
     const whichCategory = ref("");
@@ -50,6 +49,7 @@ export default {
     const imgUrl = ref("");
     const time = ref("");
     const isRead = ref(false);
+    const show = ref(null);
     const arrSearch = {
       arr: [
         { id: 0, title: "All" },
@@ -58,6 +58,16 @@ export default {
         { id: 3, title: "Other" },
       ],
     };
+
+    watch(
+      () => props.lastMsg,
+      () => {
+        cusMsg.value = props.lastMsg;
+        time.value = props.createtime;
+        // isRead.value = props.read;
+        console.log("aaaa");
+      }
+    );
     //開始
     onMounted(() => {
       checkRoomId.value = props.thisRoomId;
@@ -65,7 +75,7 @@ export default {
       cusMsg.value = props.lastMsg;
       imgUrl.value = props.img;
       time.value = props.createtime;
-      isRead.value = props.read;
+      // isRead.value = props.read;
 
       whichCategory.value = arrSearch.arr.filter(
         (item) => item.id === props.category
@@ -85,6 +95,7 @@ export default {
       checkRoomId,
       roomId,
       isRead,
+      show,
     };
   },
 };

@@ -107,6 +107,10 @@ export default {
     });
 
     onUnmounted(() => {
+      insertGo();
+    });
+
+    const insertGo = () => {
       const arr = arrMessages.arr[arrMessages.arr.length - 1];
       if (arr && arr.date && isSave.value) {
         console.log(arr, todayDate.value, arr.date);
@@ -117,7 +121,7 @@ export default {
         }
         isSave.value = false;
       }
-    });
+    };
 
     watch(
       () => arrMessages.arr,
@@ -191,6 +195,7 @@ export default {
         }
         await nextTick();
         goBack();
+        insertGo();
       });
     };
 
