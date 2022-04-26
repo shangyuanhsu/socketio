@@ -20,7 +20,7 @@
         <div class="time">{{ time }}</div>
       </div>
       <div class="otherUser">{{ cusName }}</div>
-      <div class="cusMsg" :ref="show">{{ cusMsg }}</div>
+      <div class="cusMsg" :ref="show">{{ cusMsg.replace(/<br\s*[\/]?>/gi, "\n") }}</div>
     </div>
     <div class="wram" v-show="isRead">!</div>
   </div>

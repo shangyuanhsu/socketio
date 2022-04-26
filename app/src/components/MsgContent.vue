@@ -342,7 +342,7 @@ export default {
   background: rgb(228, 228, 228);
 }
 .allChat {
-  height: calc(100vh - 177px);
+  height: calc(100vh - 182px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
