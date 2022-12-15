@@ -1,6 +1,6 @@
 # socketio
 
-## doing
+
 
 ## use
 Vue + Socket.IO + NodeJS + mySQL 
