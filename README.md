@@ -4,7 +4,7 @@
 
 
 ## use
-Vue + Socket.IO + NodeJS + mySQL 
+Vue + Socket.IO + NodeJS + mongodb 
 
 ## Project setup
 ### socketio > app
